@@ -1,0 +1,22 @@
+return Def.ActorFrame {
+    LoadActor("avatar")..{
+        InitCommand=cmd(zoom,.5;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM;diffusealpha,0);
+        OnCommand=cmd(decelerate,0.5;addy,-50;diffusealpha,1);
+        OffCommand=cmd(decelerate,0.5;addy,50;diffusealpha,0);
+    };
+    LoadActor("blackline")..{
+        InitCommand=cmd(zoom,.6;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM+20;diffusealpha,0);
+        OnCommand=cmd(decelerate,0.5;addy,-45;diffusealpha,1);
+        OffCommand=cmd(decelerate,0.5;addy,50;diffusealpha,0);
+    };
+    --The vertical alignment on this font is beyond stupid
+    LoadFont("_alternategotno2 40px")..{
+        InitCommand=cmd(zoom,.6;x,SCREEN_CENTER_X;y,SCREEN_BOTTOM+20;diffusealpha,0;decelerate,0.5;addy,-38;diffusealpha,1);
+		OffCommand=cmd(decelerate,0.5;addy,50;diffusealpha,0);
+		Text=THEME:GetString("Common","Username");
+		--[[OnCommand=function(self)
+			self:settext("ScienceNight");
+			(cmd(zoom,.5)) (self)
+		end;]]
+	};
+};
