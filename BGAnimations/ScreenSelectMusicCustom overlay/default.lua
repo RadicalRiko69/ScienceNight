@@ -270,13 +270,13 @@ local function inputs(event)
 				--local focus_pos = courseScroller.focus_pos;
 				courseScroller:run_anonymous_function(function(self, info,info_index,item_index)
 					local offsetFromFocus = item_index-courseScroller.focus_pos
-					self.container:stoptweening():decelerate(.3)
+					self.container:stoptweening():decelerate(1)
 					if offsetFromFocus==0 then
 						self.container:rotationy(360):x(0);
 					elseif offsetFromFocus > 0 then
-						self.container:addx(800);
+						self.container:addx(SCREEN_WIDTH*.8);
 					else
-						self.container:addx(-800);
+						self.container:addx(-SCREEN_WIDTH*.8);
 					end;
 					--self.container:stoptweening():linear(.3):rotationy(360):sleep(0):rotationy(0);
 				end)
