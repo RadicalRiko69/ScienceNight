@@ -233,12 +233,13 @@ end;
 local function ChangeSteps(pn,dir)
 	local selection = stepsSelection + dir
 	if selection < #stepsArray+1 and selection > 0 then
-		SCREENMAN:SystemMessage(stepsSelection.."->"..selection);
+		--SCREENMAN:SystemMessage(stepsSelection.."->"..selection);
 		if isMissionMode then
 			local progress = QUESTMODE[MasterPlayer][GROUPWHEEL_GROUPS[groupSelection]][GAMESTATE:GetCurrentSong():GetTranslitFullTitle()]
 			--Check if previous steps has been cleared before allowing selecting next steps.
-			if progress[selection-1] == true then
+			if selection == 1 or progress[selection-1] == true then
 				GAMESTATE:SetCurrentSteps(pn,stepsArray[selection]);
+				stepsSelection = selection;
 			end;
 				
 		else
