@@ -1,17 +1,17 @@
 return Def.ActorFrame {
-	OnCommand=cmd(sleep,2;linear,0.5;diffusealpha,0;);
+	OnCommand=cmd(sleep,4;linear,0.5;diffusealpha,0;);
   Def.Sprite{
-        Name= "team",
-        OnCommand= cmd(zoom,0.65;x,SCREEN_CENTER_X-58;y,SCREEN_CENTER_Y-800;sleep,1;linear,0.1;addy,728;sleep,0.05;addy,-1;sleep,0.05;addy,1;),
-        Texture= "team",
-      },
+    Name= "team",
+    OnCommand= cmd(zoom,0.6;x,SCREEN_CENTER_X-30;y,SCREEN_CENTER_Y-400;sleep,1;linear,0.1;addy,365;sleep,0.05;addy,-1;sleep,0.05;addy,1),
+    Texture= "team (doubleres).png",
+  },
   Def.Sprite{
-        Name= "sushi",
-        OnCommand= cmd(zoom,0.58;x,SCREEN_CENTER_X+50;y,SCREEN_CENTER_Y+800;sleep,1;linear,0.1;addy,-728;sleep,0.05;addy,1;sleep,0.05;addy,-1;),
-        Texture= "sushi",
-      },
+    Name= "sushi",
+    OnCommand= cmd(zoom,0.6;x,SCREEN_CENTER_X+30;y,SCREEN_CENTER_Y+400;sleep,1;linear,0.1;addy,-365;sleep,0.05;addy,1;sleep,0.05;addy,-1),
+    Texture= "sushi (doubleres).png",
+  },
      
-    LoadFont("Common Normal")..{
+  LoadFont("Common Normal")..{
     	Text="With help from";
     	OnCommand=cmd(Center;addy,275/2;diffusealpha,0;sleep,1;linear,.1;diffusealpha,1;);
     };
