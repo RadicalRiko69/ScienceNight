@@ -342,6 +342,7 @@ local function inputs(event)
 				SCREENMAN:SystemMessage("This song has no steps for your current style. Cannot continue.")
 			end;
 		end;
+		
 		--SCREENMAN:SystemMessage(courseScroller:get_focus_offset());
 	elseif curState == SELECTING_GROUP then
 		if button == "Center" or button == "Start" then
@@ -420,6 +421,12 @@ local t = Def.ActorFrame{
 		SCREENMAN:GetTopScreen():AddInputCallback(inputs);
 		--[[SCREENMAN:set_input_redirected(PLAYER_1, true);
 		SCREENMAN:set_input_redirected(PLAYER_2, true);]]
+	end;
+	
+	CodeMessageCommand=function(self,param)
+		if param.Name == "OpenOpList" then
+			SCREENMAN:AddNewScreenToTop("ScreenPlayerOptions");
+		end;
 	end;
 }
 
