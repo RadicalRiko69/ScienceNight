@@ -18,6 +18,11 @@ t[#t+1] = Def.ActorFrame {
 
 t[#t+1] = Def.Actor {
 	BeginCommand=function(self)
+		if (getenv("PlayMode") == "Missions") then
+			for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
+				QUESTMODE:SaveCurrentProgress(pn)
+			end;
+		end;
 		if SCREENMAN:GetTopScreen():HaveProfileToSave() then self:sleep(1); end;
 		self:queuecommand("Load");
 	end;

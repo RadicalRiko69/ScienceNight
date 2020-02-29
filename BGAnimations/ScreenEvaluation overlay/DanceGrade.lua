@@ -19,15 +19,10 @@ local p1holdmiss =	css1:GetTapNoteScores("TapNoteScore_CheckpointMiss")	--MISS (
 local p1minest =	css1:GetTapNoteScores("TapNoteScore_HitMine")			--MISS (MINE HIT)
 local maxcp1 =		css1:MaxCombo()											--Max Combo for this stage
 
---workaround for new scoring system
---TODO: getScores is returning nil
---css1:SetScore(getScores()[player]);
-
 local p1score =		css1:GetScore()			--score :v
 
---TODO: Why are you declaring a variable and then assigning it on the next line wtf
---local p1accuracy =	tonumber(string.format("%.02f",(p1score/stagemaxscore)*100))	--Player 1 accuracy formatted number	--"%.3f" thanks CH32, se cambia el numero para mas decimales
-local p1accuracy = getenv(pname(player).."_accuracy") or 0;
+--round(STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()*100)
+local p1accuracy = round(css1:GetPercentDancePoints()*100);
 
 
 local p1ravins =	p1holdstr+p1w1
@@ -94,9 +89,8 @@ for i = 1,#datalabelslist,1 do
 	};
 	
 end;
---]]
 
---[
+--[[
 t[#t+1] = Def.ActorFrame{
 	Def.Actor{		--set in the env table accuracy values, so they can be get from save profile screen (next screen)
 		InitCommand=function(self)
@@ -108,7 +102,27 @@ t[#t+1] = Def.ActorFrame{
 		end;
 	};
 };
---]]
+]]
+
+--You can adjust it Gio
+if (getenv("PlayMode") == "Missions") then
+	
+	t[#t+1] = LoadFont("Common Normal")..{
+		--Text="Mission Cleared!";
+		InitCommand=function(self)
+			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-110):diffusealpha(0):zoom(initzoom);
+			
+			QUESTMODE:CheckAndUpdateMissionStatus(GAMESTATE:GetMasterPlayerNumber())
+			if QUESTMODE:HasPassedMission(GAMESTATE:GetMasterPlayerNumber()) then
+				self:settext("Mission Cleared!");
+			else
+				self:settext("Mission Failed...");
+			end;
+		end;
+		OnCommand=cmd(sleep,fx+(inc*(#datalabelslist+1));accelerate,intw;diffusealpha,1;zoom,datazoom-0.15;);
+		OffCommand=cmd(decelerate,0.2;zoomx,0);
+	};
+end;
 
 --P1 RANK CODE
 if css1:IsDisqualified()==false then

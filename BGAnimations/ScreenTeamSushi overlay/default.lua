@@ -17,7 +17,7 @@ return Def.ActorFrame {
     };
 	Def.Sprite{
 		Texture="RhythmLunatic Logo";
-		InitCommand=cmd(Center;addy,375/2;diffusealpha,0);
+		InitCommand=cmd(Center;addy,375/2+10;diffusealpha,0);
 		OnCommand=cmd(sleep,1;linear,0.1;diffusealpha,1);
 	};
 	

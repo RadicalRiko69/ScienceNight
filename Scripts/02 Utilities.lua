@@ -15,6 +15,18 @@ function getJacketOrBanner(song)
 	end;
 end;
 
+function strArrayToString(a)
+	local s = "";
+	for i = 1, #a do
+		if type(a[i]) == "string" then
+			s = s..a[i]..",";
+		else
+			s = s.."ERROR,";
+		end;
+	end
+	return s;
+end
+
 function X3Wheel(self,offsetFromCenter,itemIndex,numItems)
 	local function GetZoom(offsetFromCenter)
 		if math.abs(offsetFromCenter) >= 1 then

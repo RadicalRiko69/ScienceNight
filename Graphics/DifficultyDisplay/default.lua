@@ -4,13 +4,15 @@ local spacing = 29;
 local delay = 2
 
 local baseX = -(spacing*5.5);
---Don't ever make this anything other than 0, it just fucks up your theme
+--Don't ever make this anything other than 0, it just messes up your theme
 local baseY = 0;
 
 local stepsArray;
 
+local isMissionMode = (getenv("PlayMode") == "Missions")
+local mmProgress;
 
-function SortCharts(a,b)
+local function SortCharts(a,b)
     local bST = StepsType:Compare(a:GetStepsType(),b:GetStepsType()) < 0
     if a:GetStepsType() == b:GetStepsType() then
         return a:GetMeter() < b:GetMeter()
@@ -19,27 +21,26 @@ function SortCharts(a,b)
     end;
 end
 
-function GetCurrentStepsIndex(pn)
-	local playerSteps = GAMESTATE:GetCurrentSteps(pn);
-	for i=1,#stepsArray do
-		if playerSteps == stepsArray[i] then
-			return i;
-		end;
+function bToStr(b)
+	if b == true then
+		return "TRUE"
 	end;
-	--If it reaches this point, the selected steps doesn't equal anything.
-	return -1;
+	return "FALSE"
 end;
 
---What's the point of this when we're playing Pump?
---[[local difficulties = {
-	diff1 = "Beginner",
-	diff2 = "Easy",
-	diff3 = "Medium",
-	diff4 = "Hard",
-	diff5 = "Challenge",
-	diff6 = "Edit",
-};]]
-
+function bArrayToString(a)
+	local s = "";
+	for i = 1, #a do
+		if type(a[i]) == "string" then
+			s = s..a[i]..",";
+		elseif type(a[i]) == "boolean" then
+			s = s..bToStr(a[i])..",";
+		else
+			s = s.."ERROR,";
+		end;
+	end
+	return s;
+end
 
 t[#t+1] = Def.ActorFrame{
 	CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");
@@ -48,7 +49,15 @@ t[#t+1] = Def.ActorFrame{
 			local song = GAMESTATE:GetCurrentSong();
 			if song then
 				stepsArray = song:GetAllSteps();
-				table.sort(stepsArray, SortCharts)
+				--Doesn't work with quest mode.
+				--table.sort(stepsArray, SortCharts)
+				
+				if isMissionMode then
+					assert(GAMESTATE:GetMasterPlayerNumber(),"No master player!")
+					assert(getenv("cur_group"),"Current group var not set!")
+					mmProgress = QUESTMODE[GAMESTATE:GetMasterPlayerNumber()][getenv("cur_group")][song:GetTranslitFullTitle()]
+					--SCREENMAN:SystemMessage(bArrayToString(mmProgress))
+				end;
 			else
 				stepsArray = nil;
 			end;
@@ -102,7 +111,7 @@ for i=1,12 do
 				if stepsArray then
 					local j;
 					--TODO: Fix it so it can account for over 24 charts.
-					if GetCurrentStepsIndex(PLAYER_1) > 12 or GetCurrentStepsIndex(PLAYER_2) > 12 then
+					if GetCurrentStepsIndex(PLAYER_1,stepsArray) > 12 or GetCurrentStepsIndex(PLAYER_2,stepsArray) > 12 then
 						j = i+12;
 					else
 						j = i;
@@ -145,11 +154,10 @@ for i=1,12 do
 			PreviousSongMessageCommand=cmd(playcommand,"Refresh");
 			RefreshCommand=function(self)
 				self:stoptweening();
-
 				if stepsArray then
 					local j;
 					--TODO: Fix it so it can account for over 24 charts.
-					if GetCurrentStepsIndex(PLAYER_1) > 12 or GetCurrentStepsIndex(PLAYER_2) > 12 then
+					if GetCurrentStepsIndex(PLAYER_1,stepsArray) > 12 or GetCurrentStepsIndex(PLAYER_2,stepsArray) > 12 then
 						j = i+12;
 					else
 						j = i;
@@ -184,6 +192,14 @@ for i=1,12 do
 
 
 		};
+		Def.Sprite{
+			Condition=isMissionMode;
+			Texture="Lock";
+			InitCommand=cmd(x,baseX+spacing*(i-1);y,baseY;zoom,.3);
+			CurrentSongChangedMessageCommand=function(self)
+				self:visible(mmProgress ~= nil and i>1 and mmProgress[i-1]==false and i <= #mmProgress)
+			end;
+		};
 	};
 
 
@@ -202,7 +218,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		--I know this looks moronic, but I don't think there's any other way to do it...
 		SetCommand=function(self)
 			if stepsArray then
-				local index = GetCurrentStepsIndex(pn);
+				local index = GetCurrentStepsIndex(pn,stepsArray);
 				if index > 12 then
 					index = index%12;
 				end;

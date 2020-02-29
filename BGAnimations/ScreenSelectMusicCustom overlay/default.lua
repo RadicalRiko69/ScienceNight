@@ -7,15 +7,23 @@ can finally make a 1:1 DDR II theme!
 local numWheelItems = 15
 local wheelAnimTime = .1
 
+local isMissionMode = (getenv("PlayMode") == "Missions")
+--Only used during quest mode. Although quest mode DOES support two players if you really want it to.
+local MasterPlayer = GAMESTATE:GetMasterPlayerNumber()
+
 local GROUPWHEEL_GROUPS;
-if getenv("PlayMode") == "Missions" then
+if isMissionMode then
 	GROUPWHEEL_GROUPS = MISSION_GROUPS;
+	--If quest mode not already initialized, initialize it.
+	if not QUESTMODE[MasterPlayer] then
+		QUESTMODE:LoadCurrentProgress(MasterPlayer)
+	end;
 else
 	GROUPWHEEL_GROUPS = SONGMAN:GetSongGroupNames();
 end;
 
--- Scroller for the courses
-local courseScroller = setmetatable({disable_wrapping= false}, item_scroller_mt)
+-- Scroller for the songs
+local songScroller = setmetatable({disable_wrapping= false}, item_scroller_mt)
 local songSelection = 1;
 local item_mt_course= {
   __index= {
@@ -36,7 +44,7 @@ local item_mt_course= {
 			
 			Def.Quad{
 				Name="Glow";
-				InitCommand=cmd(setsize,155,155;blend,Blend.Add;diffuseshift;effectcolor1,color("#88CCFF00");effectcolor2,color("#FFFFFF"));
+				InitCommand=cmd(setsize,155,155;diffuseshift;effectcolor1,color("#88CCFF00");effectcolor2,color("#FFFFFF"));
 				
 			};
 			Def.Sprite{
@@ -225,9 +233,18 @@ end;
 local function ChangeSteps(pn,dir)
 	local selection = stepsSelection + dir
 	if selection < #stepsArray+1 and selection > 0 then
-		--if stepsArray[selection]
-		GAMESTATE:SetCurrentSteps(pn,stepsArray[selection]);
-		stepsSelection = selection;
+		SCREENMAN:SystemMessage(stepsSelection.."->"..selection);
+		if isMissionMode then
+			local progress = QUESTMODE[MasterPlayer][GROUPWHEEL_GROUPS[groupSelection]][GAMESTATE:GetCurrentSong():GetTranslitFullTitle()]
+			--Check if previous steps has been cleared before allowing selecting next steps.
+			if progress[selection-1] == true then
+				GAMESTATE:SetCurrentSteps(pn,stepsArray[selection]);
+			end;
+				
+		else
+			GAMESTATE:SetCurrentSteps(pn,stepsArray[selection]);
+			stepsSelection = selection;
+		end;
 	end;
 end;
 
@@ -237,8 +254,39 @@ local SELECTING_SONG = 1;
 local SELECTING_STEPS = 2;
 
 local curState = SELECTING_SONG;
+if isMissionMode then
+	curState = SELECTING_GROUP;
+end;
 
+--[[
+This is a table that holds the songs in the group, NOT THE NAME OF THE GROUP!
+To get the current group as a string: GROUPWHEEL_GROUPS[groupSelection]
+or getenv("cur_group") if you need to access it globally.
+cur_group is only updated when you select the group, not when you're scrolling through the groups.
+]]
 local currentGroup;
+
+
+local function updateCurrentSong()
+	--SCREENMAN:SystemMessage(songSelection.."/"..#currentGroup);
+	local song = currentGroup[songSelection]
+	if isMissionMode and song then
+		local mMode_current_group_table = QUESTMODE[MasterPlayer][GROUPWHEEL_GROUPS[groupSelection]]
+		--If progress table doesn't exist for this song, create it.
+		if not mMode_current_group_table[song:GetTranslitFullTitle()] then
+			mMode_current_group_table[song:GetTranslitFullTitle()] = {}
+			for i,steps in pairs(song:GetAllSteps()) do
+				mMode_current_group_table[song:GetTranslitFullTitle()][i] = false;
+			end;
+			SCREENMAN:SystemMessage(pname(MasterPlayer).."/"..GROUPWHEEL_GROUPS[groupSelection].."/"..song:GetTranslitFullTitle());
+		end;
+	end;
+	--Maybe we should have an assert for a nil song here?
+	GAMESTATE:SetCurrentSong(song)
+	GAMESTATE:SetPreferredSong(song)
+	play_sample_music();
+	MESSAGEMAN:Broadcast("CurrentSongChanged",{Selection=songSelection,Total=#currentGroup});
+end;
 
 local function inputs(event)
 	
@@ -266,17 +314,24 @@ local function inputs(event)
 		elseif button == "Center" or button == "Start" then
 			local can,reason = GAMESTATE:CanSafelyEnterGameplay()
 			if can then
+				
 				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen");
 				--local curFocus = 
 				--local offsetFromFocus = item_index-focus_pos
-				--local focus_pos = courseScroller.focus_pos;
-				courseScroller:run_anonymous_function(function(self, info,info_index,item_index)
-					local offsetFromFocus = item_index-courseScroller.focus_pos
+				--local focus_pos = songScroller.focus_pos;
+				
+				--The animation that plays when you select a song, edit it to your liking
+				songScroller:run_anonymous_function(function(self, info,info_index,item_index)
+					local offsetFromFocus = item_index-songScroller.focus_pos
 					self.container:stoptweening():decelerate(1)
+					
+					--The current song
 					if offsetFromFocus==0 then
-						self.container:rotationy(360):x(0):y(100);
+						self.container:rotationy(360):x(0):y(100):zoom(1.5):GetChild("Glow"):visible(false);
+					--To the right of the current song
 					elseif offsetFromFocus > 0 then
 						self.container:addx(SCREEN_WIDTH*.8):y(100);
+					--To the left of the current song
 					else
 						self.container:addx(-SCREEN_WIDTH*.8):y(100);
 					end;
@@ -298,16 +353,13 @@ local function inputs(event)
 			else
 				songSelection = songSelection - 1 ;
 			end;
-			if courseScroller:get_focus_offset() < -3 then
-				courseScroller:scroll_by_amount(-1)
+			if songScroller:get_focus_offset() < -3 then
+				songScroller:scroll_by_amount(-1)
 			else
-				courseScroller:move_focus_by(-1);
+				songScroller:move_focus_by(-1);
 			end;
-			--courseScroller:scroll_by_amount(-1);
-			GAMESTATE:SetCurrentSong(currentGroup[songSelection])
-			GAMESTATE:SetPreferredSong(currentGroup[songSelection])
-			play_sample_music();
-			MESSAGEMAN:Broadcast("CurrentSongChanged",{Selection=songSelection,Total=#currentGroup});
+			--songScroller:scroll_by_amount(-1);
+			updateCurrentSong()
 		elseif button == "DownRight" or button == "Right" or button == "MenuRight" then
 			SOUND:PlayOnce(THEME:GetPathS("MusicWheel", "change"), true);
 			if songSelection == #currentGroup then
@@ -315,15 +367,12 @@ local function inputs(event)
 			else
 				songSelection = songSelection + 1
 			end
-			if courseScroller:get_focus_offset() > 3 then
-				courseScroller:scroll_by_amount(1);
+			if songScroller:get_focus_offset() > 3 then
+				songScroller:scroll_by_amount(1);
 			else
-				courseScroller:move_focus_by(1);
+				songScroller:move_focus_by(1);
 			end;
-			GAMESTATE:SetCurrentSong(currentGroup[songSelection])
-			GAMESTATE:SetPreferredSong(currentGroup[songSelection])
-			play_sample_music();
-			MESSAGEMAN:Broadcast("CurrentSongChanged",{Selection=songSelection,Total=#currentGroup});
+			updateCurrentSong();
 		elseif button == "Center" or button == "Start" then
 			--[[SCREENMAN:set_input_redirected(PLAYER_1, false);
 			SCREENMAN:set_input_redirected(PLAYER_2, false);]]
@@ -333,7 +382,7 @@ local function inputs(event)
 			--assert(#stepsArray > 0,"Hey idiot, this song has no valid steps.")
 			if seekFirstValidSteps(pn,'StepsType_Pump_Single') then
 				GAMESTATE:SetCurrentSteps(pn,stepsArray[stepsSelection]);
-				--courseScroller:set_info_set(currentGroup,1);
+				--songScroller:set_info_set(currentGroup,1);
 				MESSAGEMAN:Broadcast("SongChosen");
 				--Changing the steps seems to broadcast this anyways, so we don't need to do it
 				--MESSAGEMAN:Broadcast("CurrentSteps"..)
@@ -343,7 +392,7 @@ local function inputs(event)
 			end;
 		end;
 		
-		--SCREENMAN:SystemMessage(courseScroller:get_focus_offset());
+		--SCREENMAN:SystemMessage(songScroller:get_focus_offset());
 	elseif curState == SELECTING_GROUP then
 		if button == "Center" or button == "Start" then
 			--[[SCREENMAN:set_input_redirected(PLAYER_1, false);
@@ -352,12 +401,14 @@ local function inputs(event)
 			--if the group they're about to select matches the last picked group, do nothing.
 			if GROUPWHEEL_GROUPS[groupSelection] ~= getenv("cur_group") then
 				setenv("cur_group",GROUPWHEEL_GROUPS[groupSelection]);
+				if isMissionMode then QUESTMODE.currentWorld = GROUPWHEEL_GROUPS[groupSelection] end;
+				--SCREENMAN:SystemMessage(GROUPWHEEL_GROUPS[groupSelection]);
 				currentGroup = SONGMAN:GetSongsInGroup(GROUPWHEEL_GROUPS[groupSelection],true)
 				assert(#currentGroup > 0,"Hey idiot, you don't have any songs in this group.")
-				courseScroller:move_focus_by(-courseScroller:get_focus_offset())
-				--courseScroller:scroll_to_pos(1);
-				courseScroller:set_info_set(currentGroup,1)
-				courseScroller:scroll_to_start();
+				songScroller:move_focus_by(-songScroller:get_focus_offset())
+				--songScroller:scroll_to_pos(1);
+				songScroller:set_info_set(currentGroup,1)
+				songScroller:scroll_to_start();
 				songSelection = 1;
 				GAMESTATE:SetCurrentSong(currentGroup[songSelection])
 				play_sample_music();
@@ -430,33 +481,51 @@ local t = Def.ActorFrame{
 	end;
 }
 
---CourseScroller frame
+--songScroller frame
 local s = Def.ActorFrame{
+	OnCommand=function(self)
+		if isMissionMode then
+			self:diffusealpha(0);
+		end;
+	end;
+	StartSelectingSongMessageCommand=cmd(diffusealpha,1);
 	--LoadActor(THEME:GetPathB("ScreenSelectMusic","decorations"));
-	LoadActor("decorations");
+	LoadActor("decorations")
 }
 --THE BACKGROUND VIDEO
 --s[#s+1] = LoadActor(THEME:GetPathG("","background/common_bg"))..{};
-s[#s+1] = courseScroller:create_actors("foo", numWheelItems, item_mt_course, SCREEN_CENTER_X, SCREEN_CENTER_Y-135);
+s[#s+1] = songScroller:create_actors("foo", numWheelItems, item_mt_course, SCREEN_CENTER_X, SCREEN_CENTER_Y-135);
 --s[#s+1] = LoadActor("difficultyIcons");
 --s[#s+1] = LoadActor("coursePreview");
 
 --GroupScroller frame
 local g = Def.ActorFrame{
 	
-	InitCommand=cmd(diffusealpha,0);
+	InitCommand=function(self)
+		--If the wheel started on selecting song state then this should be invisible.
+		if curState == SELECTING_SONG then
+			self:diffusealpha(0);
+		end;
+	end;
 	--InitCommand=cmd(SetDrawByZPosition,true);
 	OnCommand=function(self)
 		groupScroller:set_info_set(GROUPWHEEL_GROUPS, 1);
-		local prefSong = GAMESTATE:GetPreferredSong();
-		if not prefSong then 
-			prefSong = SONGMAN:GetRandomSong()
+		
+		--Only need to set up the song wheel when we're defaulting to song select instead of group select.
+		if curState == SELECTING_SONG then
+			local prefSong = GAMESTATE:GetPreferredSong();
+			if not prefSong then 
+				prefSong = SONGMAN:GetRandomSong()
+			end;
+			currentGroup = SONGMAN:GetSongsInGroup(prefSong:GetGroupName(),true)
+			setenv("cur_group",prefSong:GetGroupName());
+			songScroller:set_info_set(currentGroup,1)
+			MESSAGEMAN:Broadcast("CurrentSongChanged");
+			play_sample_music();
+		else
+			--Making this an env was completely stupid
+			setenv("cur_group", nil)
 		end;
-		currentGroup = SONGMAN:GetSongsInGroup(prefSong:GetGroupName(),true)
-		setenv("cur_group",prefSong:GetGroupName());
-		courseScroller:set_info_set(currentGroup,1)
-		MESSAGEMAN:Broadcast("CurrentSongChanged");
-		play_sample_music();
 	end;
 
 	SongChosenMessageCommand=function(self)

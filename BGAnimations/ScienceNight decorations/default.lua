@@ -1,3 +1,8 @@
+--Uncomment to enable alternate nameplates
+--You probably need 1080p to see them
+--do return Def.ActorFrame{ LoadActor("alternate"); } end;
+
+
 return Def.ActorFrame {
     Def.Sprite{
     	Texture=THEME:GetPathG("","Avatars/"..ThemePrefs.Get("ProfilePictures"));
