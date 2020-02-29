@@ -1,7 +1,7 @@
 local t = Def.ActorFrame{};
 
 	t[#t+1] = LoadActor("stagebreak")..{
-		InitCommand=cmd(Center;zoom,1.5;diffusealpha,0);
+		InitCommand=cmd(Center;zoom,0.75;diffusealpha,0);
 		OnCommand=cmd(linear,0.25;diffusealpha,1);
 	};
 	--1.5 for 1080p, 0.7 for 480p
