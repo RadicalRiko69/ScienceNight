@@ -98,7 +98,7 @@ local item_mt_course= {
 	-- info is one entry in the info set that is passed to the scroller.
 	-- In this case, those are course objects.
 	set= function(s, song)
-		local path = song:GetJacketPath();
+		--[[local path = song:GetJacketPath();
 		if path then
 			s.container:GetChild("banner"):Load(path)
 			--self:LoadFromCached("Jacket",path);
@@ -110,7 +110,8 @@ local item_mt_course= {
 			else
 				s.container:GetChild("banner"):Load(THEME:GetPathG("Common","fallback banner"))
 			end;
-		end;
+		end;]]
+		s.container:GetChild("banner"):Load(getJacketOrBanner(song))
 	end,
 	--[[gettext=function(self)
 		--return self.container:GetChild("text"):gettext()
@@ -235,9 +236,10 @@ local SELECTING_GROUP = 0;
 local SELECTING_SONG = 1;
 local SELECTING_STEPS = 2;
 
-local curState = SELECTING_GROUP;
+local curState = SELECTING_SONG;
 
 local currentGroup;
+
 local function inputs(event)
 	
 	local pn= event.PlayerNumber
@@ -303,6 +305,7 @@ local function inputs(event)
 			end;
 			--courseScroller:scroll_by_amount(-1);
 			GAMESTATE:SetCurrentSong(currentGroup[songSelection])
+			GAMESTATE:SetPreferredSong(currentGroup[songSelection])
 			play_sample_music();
 			MESSAGEMAN:Broadcast("CurrentSongChanged",{Selection=songSelection,Total=#currentGroup});
 		elseif button == "DownRight" or button == "Right" or button == "MenuRight" then
@@ -318,6 +321,7 @@ local function inputs(event)
 				courseScroller:move_focus_by(1);
 			end;
 			GAMESTATE:SetCurrentSong(currentGroup[songSelection])
+			GAMESTATE:SetPreferredSong(currentGroup[songSelection])
 			play_sample_music();
 			MESSAGEMAN:Broadcast("CurrentSongChanged",{Selection=songSelection,Total=#currentGroup});
 		elseif button == "Center" or button == "Start" then
@@ -343,14 +347,20 @@ local function inputs(event)
 		if button == "Center" or button == "Start" then
 			--[[SCREENMAN:set_input_redirected(PLAYER_1, false);
 			SCREENMAN:set_input_redirected(PLAYER_2, false);]]
-			currentGroup = SONGMAN:GetSongsInGroup(GROUPWHEEL_GROUPS[groupSelection],true)
-			assert(#currentGroup > 0,"Hey idiot, you don't have any songs in this group.")
-			courseScroller:move_focus_by(-courseScroller:get_focus_offset())
-			--courseScroller:scroll_to_pos(1);
-			courseScroller:set_info_set(currentGroup,1)
-			courseScroller:scroll_to_start();
-			songSelection = 1;
-			GAMESTATE:SetCurrentSong(currentGroup[songSelection])
+			
+			--if the group they're about to select matches the last picked group, do nothing.
+			if GROUPWHEEL_GROUPS[groupSelection] ~= getenv("cur_group") then
+				setenv("cur_group",GROUPWHEEL_GROUPS[groupSelection]);
+				currentGroup = SONGMAN:GetSongsInGroup(GROUPWHEEL_GROUPS[groupSelection],true)
+				assert(#currentGroup > 0,"Hey idiot, you don't have any songs in this group.")
+				courseScroller:move_focus_by(-courseScroller:get_focus_offset())
+				--courseScroller:scroll_to_pos(1);
+				courseScroller:set_info_set(currentGroup,1)
+				courseScroller:scroll_to_start();
+				songSelection = 1;
+				GAMESTATE:SetCurrentSong(currentGroup[songSelection])
+				play_sample_music();
+			end;
 			MESSAGEMAN:Broadcast("StartSelectingSong");
 			curState = SELECTING_SONG
 		elseif button == "DownLeft" or button == "Left" or button == "MenuLeft" then
@@ -361,7 +371,7 @@ local function inputs(event)
 				groupSelection = groupSelection - 1 ;
 			end;
 			groupScroller:scroll_by_amount(-1);
-			setenv("cur_group",GROUPWHEEL_GROUPS[groupSelection]);
+			--setenv("cur_group",GROUPWHEEL_GROUPS[groupSelection]);
 			MESSAGEMAN:Broadcast("GroupChange");
 			MESSAGEMAN:Broadcast("PreviousGroup");
 			
@@ -373,7 +383,7 @@ local function inputs(event)
 				groupSelection = groupSelection + 1
 			end
 			groupScroller:scroll_by_amount(1);
-			setenv("cur_group",GROUPWHEEL_GROUPS[groupSelection]);
+			--setenv("cur_group",GROUPWHEEL_GROUPS[groupSelection]);
 			MESSAGEMAN:Broadcast("GroupChange");
 			MESSAGEMAN:Broadcast("NextGroup");
 		--elseif button == "UpLeft" or button == "UpRight" then
@@ -427,11 +437,19 @@ s[#s+1] = courseScroller:create_actors("foo", numWheelItems, item_mt_course, SCR
 --GroupScroller frame
 local g = Def.ActorFrame{
 	
-	--InitCommand=cmd(diffusealpha,0);
+	InitCommand=cmd(diffusealpha,0);
 	--InitCommand=cmd(SetDrawByZPosition,true);
 	OnCommand=function(self)
 		groupScroller:set_info_set(GROUPWHEEL_GROUPS, 1);
-		courseScroller:set_info_set(SONGMAN:GetSongsInGroup(GROUPWHEEL_GROUPS[groupSelection],true),1)
+		local prefSong = GAMESTATE:GetPreferredSong();
+		if not prefSong then 
+			prefSong = SONGMAN:GetRandomSong()
+		end;
+		currentGroup = SONGMAN:GetSongsInGroup(prefSong:GetGroupName(),true)
+		setenv("cur_group",prefSong:GetGroupName());
+		courseScroller:set_info_set(currentGroup,1)
+		MESSAGEMAN:Broadcast("CurrentSongChanged");
+		play_sample_music();
 	end;
 
 	SongChosenMessageCommand=function(self)

@@ -1,7 +1,5 @@
 local player = ...;
---fuck barely
--- -- Season 2 asset designer A.Sora here
--- -- If we decide to add W5 back, it'll be called Failin'
+
 --local p1w5 =		css1:GetTapNoteScores("TapNoteScore_W5")				--BARELY
 local t =			Def.ActorFrame {};
 local css1 =		STATSMAN:GetCurStageStats():GetPlayerStageStats(player);
@@ -63,16 +61,16 @@ end;
 
 --TODO: These should probably be metrics
 local sepx =		100					--horizontal spacing from labels
-local sepy =		70					--vertical spacing factor starting from 1st item
-local iniy =		SCREEN_TOP+150		--vertical starting point for evaluation data
-local initzoom = 	5
-local datazoom = 	2
+local sepy =		35					--vertical spacing factor starting from 1st item
+local iniy =		SCREEN_TOP+70		--vertical starting point for evaluation data
+local initzoom = 	2.5
+local datazoom = 	1
 local intw =		0.1					--"in tween" animation
 local fx =			1.8-intw			--sound effect sleep time
 local inc =			0.15				--increment time between items
 
 --Positioning of the numbers, depending on if you're playing Player 1 or Player 2.
-local xPosition = (player == PLAYER_1) and SCREEN_LEFT+500 or SCREEN_CENTER_X+500;
+local xPosition = (player == PLAYER_1) and SCREEN_LEFT+250 or SCREEN_CENTER_X+500;
 --See above.
 local alignment = (player == PLAYER_1) and left or right;
 for i = 1,#datalabelslist,1 do
@@ -85,12 +83,12 @@ for i = 1,#datalabelslist,1 do
 	
 	t[#t+1] = LoadFont("_alternategotno2 40px")..{		--JUDGEMENT LABELS
 		InitCommand=cmd(xy,_screen.cx,iniy+(i*sepy);horizalign,left;zoom,initzoom;settext,datalabelslist[i];diffusealpha,0);
-		OnCommand=cmd(x,SCREEN_CENTER_X-500;sleep,initsleeps[i];accelerate,intw;diffusealpha,1;zoom,datazoom-0.25;addy,1);
+		OnCommand=cmd(x,xPosition;sleep,initsleeps[i];accelerate,intw;diffusealpha,1;zoom,datazoom-0.25;addy,1);
 		OffCommand=cmd(decelerate,0.2;zoomx,0);
 	};
 	
 	t[#t+1] = LoadFont("_alternategotno2 40px")..{		--stats p1
-		InitCommand=cmd(xy,xPosition,iniy+(i*sepy);zoom,initzoom;horizalign,alignment;settext,p1datalist[i];diffusealpha,0);
+		InitCommand=cmd(xy,xPosition+460,iniy+(i*sepy);zoom,initzoom;horizalign,right;settext,p1datalist[i];diffusealpha,0);
 		OnCommand=cmd(sleep,initsleeps[i];accelerate,intw;diffusealpha,1;zoom,datazoom-0.15;);
 		OffCommand=cmd(decelerate,0.2;zoomx,0);
 	};
@@ -118,7 +116,7 @@ if css1:IsDisqualified()==false then
 	local initzoomp1 = 1.2;
 	--The graphics aren't centered properly and using SCREEN_WIDTH isn't really the best either
 	--Should use the aspect ratio to calculate, but whatever..
-	local finalzoomp1 = 1;
+	local finalzoomp1 = .5;
 	local p1initx = (player == PLAYER_1) and SCREEN_WIDTH/4.5 or SCREEN_RIGHT-SCREEN_WIDTH/4.5;
 	local p1inity = SCREEN_CENTER_Y-50;
 
@@ -133,7 +131,7 @@ if css1:IsDisqualified()==false then
 
 
 	t[#t+1] = LoadActor(THEME:GetPathG("","GradeDisplayEval/Grade-"..gradep1))..{
-		InitCommand=cmd(x,SCREEN_RIGHT-200;y,p1inity;draworder,100;diffusealpha,0;zoom,initzoomp1;sleep,3;linear,.2;diffusealpha,1;zoom,initzoomp1-0.25;linear,.3;zoom,finalzoomp1);
+		InitCommand=cmd(x,SCREEN_RIGHT-130;y,p1inity;draworder,100;diffusealpha,0;zoom,initzoomp1;sleep,3;linear,.2;diffusealpha,1;zoom,initzoomp1-0.25;linear,.3;zoom,finalzoomp1);
 		OffCommand=cmd(decelerate,0.5;zoom,0;diffusealpha,0);
 	};
 
@@ -143,7 +141,7 @@ if css1:IsDisqualified()==false then
 	};
 
 	t[#t+1] = LoadActor(THEME:GetPathG("","GradeDisplayEval/Grade-"..gradep1))..{
-		InitCommand=cmd(horizalign,center;blend,Blend.Add;x,SCREEN_RIGHT-200;y,p1inity;draworder,101;diffusealpha,0;zoom,initzoomp1;sleep,3;linear,.2;diffusealpha,1;zoom,initzoomp1-0.25;linear,.5;diffusealpha,0;zoom,finalzoomp1;);
+		InitCommand=cmd(horizalign,center;blend,Blend.Add;x,SCREEN_RIGHT-130;y,p1inity;draworder,101;diffusealpha,0;zoom,initzoomp1;sleep,3;linear,.2;diffusealpha,1;zoom,initzoomp1-0.25;linear,.5;diffusealpha,0;zoom,finalzoomp1;);
 		OffCommand=cmd(decelerate,0.5;zoom,0;diffusealpha,0);
 	};
 

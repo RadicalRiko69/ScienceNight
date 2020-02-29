@@ -54,20 +54,18 @@ t[#t+1] = Def.ActorFrame{
 	};
 		--BPM DISPLAY
 	LoadFont("_charter bt 40px")..{
+		Text="BPM:";
 		InitCommand=cmd(x,-220;y,95;zoom,0.6;diffusealpha,0;sleep,1;linear,1;diffusealpha,1;horizalign,left);
-		SongChosenMessageCommand=cmd(decelerate,0.05;addy,100);
-		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-100);
+		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,10);
+		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-10);
 		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-			self:settext("BPM:");
-		end;
 	};
 	
 	--add 80 to the x value
 	LoadFont("_charter bt 40px")..{
 		InitCommand=cmd(horizalign,left;x,-150;y,95;zoom,0.6;maxwidth,200;diffusealpha,0;sleep,1;linear,1;diffusealpha,1;);
-		SongChosenMessageCommand=cmd(decelerate,0.05;addy,100);
-		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-100);
+		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,10);
+		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-10);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 
@@ -186,7 +184,7 @@ t[#t+1] = Def.ActorFrame{
 
 --Arrow text
 t[#t+1] = Def.ActorFrame{
-	LoadFont("_alternategotno2 40px")..{
+	--[[LoadFont("_alternategotno2 40px")..{
 		InitCommand=cmd(x,SCREEN_LEFT+150;y,SCREEN_TOP+15;skewx,-0.2;zoom,1;diffusealpha,0);
 		OnCommand=cmd(sleep,1;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
@@ -221,24 +219,30 @@ t[#t+1] = Def.ActorFrame{
 			self:settext("(PRESS TWICE)");
 			(cmd(finishtweening;zoom,0.7)) (self)
 		end;
-	};
+	};]]
 	LoadFont("_alternategotno2 40px")..{
-		InitCommand=cmd(x,SCREEN_LEFT+70;y,SCREEN_BOTTOM-30;horizalign,left;skewx,-0.2;zoom,1;diffusealpha,0);
+		Text="Select Group";
+		InitCommand=cmd(x,SCREEN_LEFT+60;y,5;horizalign,left;vertalign,top;skewx,-0.2;zoom,.6;diffusealpha,0);
 		OnCommand=cmd(sleep,1;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-			self:settext("Previous Song");
-			(cmd(finishtweening;zoom,1)) (self)
-		end;
 	};
 	LoadFont("_alternategotno2 40px")..{
-		InitCommand=cmd(x,SCREEN_RIGHT-70;y,SCREEN_BOTTOM-30;horizalign,right;skewx,-0.2;zoom,1;diffusealpha,0);
+		Text="Select Group";
+		InitCommand=cmd(x,SCREEN_RIGHT-60;y,5;horizalign,right;vertalign,top;skewx,-0.2;zoom,.6;diffusealpha,0);
 		OnCommand=cmd(sleep,1;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-			self:settext("Next Song");
-			(cmd(finishtweening;zoom,1)) (self)
-		end;
+	};
+	LoadFont("_alternategotno2 40px")..{
+		Text="Previous Song";
+		InitCommand=cmd(x,SCREEN_LEFT+60;y,SCREEN_BOTTOM-10;horizalign,left;vertalign,bottom;skewx,-0.2;zoom,.6;diffusealpha,0);
+		OnCommand=cmd(sleep,1;linear,1;diffusealpha,1);
+		OffCommand=cmd(visible,false);
+	};
+	LoadFont("_alternategotno2 40px")..{
+		Text="Next Song";
+		InitCommand=cmd(x,SCREEN_RIGHT-60;y,SCREEN_BOTTOM-10;horizalign,right;vertalign,bottom;skewx,-0.2;zoom,.6;diffusealpha,0);
+		OnCommand=cmd(sleep,1;linear,1;diffusealpha,1);
+		OffCommand=cmd(visible,false);
 	};
 };
 

@@ -6,11 +6,17 @@ end
 -- Example usage of new system (absolutely fully implemented and completely usable)
 local Prefs =
 {
-	AutoSetStyle =
+	--[[AutoSetStyle =
 	{
 		Default = true,
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
+	},]]
+	ProfilePictures = 
+	{
+		Default = "ScienceNight",
+		Choices = {"ScienceNight", "Nine The Phantom", "Sangvis Ferri"},
+		Values = {"ScienceNight.png", "Nine The Phantom.jpg","Sangvis Ferri.gif"}
 	},
 	GameplayShowStepsDisplay = 
 	{
