@@ -17,7 +17,8 @@ GRADE_TABLE = {
 
 function getGradeFromStats(player)
 	
-	local p1accuracy = getenv(pname(player).."_accuracy") or 0;
+	local p1accuracy = round(STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()*100)
+	--local p1accuracy = getenv(pname(player).."_accuracy") or 0;
 	local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player);
 	-- old convention is commented
 	if getenv("StageFailed") == true then

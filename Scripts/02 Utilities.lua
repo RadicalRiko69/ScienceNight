@@ -5,6 +5,16 @@ function scale_to_fit(actor, width, height)
 	actor:zoom(math.min(xscale, yscale))
 end
 
+function getJacketOrBanner(song)
+	if song:HasJacket() then
+		return song:GetJacketPath();
+	elseif song:HasBanner() then
+		return song:GetBannerPath();
+	else
+		return THEME:GetPathG("Common","fallback banner");
+	end;
+end;
+
 function X3Wheel(self,offsetFromCenter,itemIndex,numItems)
 	local function GetZoom(offsetFromCenter)
 		if math.abs(offsetFromCenter) >= 1 then

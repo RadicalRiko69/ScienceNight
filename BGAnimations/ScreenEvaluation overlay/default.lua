@@ -4,7 +4,7 @@ local t = Def.ActorFrame {
 	end;
 };
 
-local function BannerUpdate(self)
+--[[local function BannerUpdate(self)
 	local song = GAMESTATE:GetCurrentSong();
 	local banner = self:GetChild("Banner");
 	local height = banner:GetHeight();
@@ -21,12 +21,13 @@ local function BannerUpdate(self)
 	end;
 	
 	self:zoom(0.57)
-end;
+end;]]
+
 t[#t+1] = Def.ActorFrame {
-	OnCommand=cmd(x,SCREEN_LEFT+250;y,SCREEN_CENTER_Y-55;SetUpdateFunction,BannerUpdate);
 	Def.Sprite {
 		Name="Banner";
-		OnCommand=cmd(scaletoclipped,500,500;diffusealpha,0;sleep,1;decelerate,1;diffusealpha,1);
+		Texture=getJacketOrBanner(GAMESTATE:GetCurrentSong());
+		OnCommand=cmd(x,SCREEN_LEFT+250/2;y,SCREEN_CENTER_Y-50;scaletoclipped,150,150;diffusealpha,0;sleep,1;decelerate,1;diffusealpha,1);
 		OffCommand=cmd(decelerate,0.5;zoom,0;diffusealpha,0);
 	};	
 };
@@ -44,31 +45,28 @@ t[#t+1] = LoadActor("music (loop)")..{
 	};
 --songinfo
 local cursong =		GAMESTATE:GetCurrentSong()
-local song =		cursong:GetDisplayMainTitle()
 local artist =		GAMESTATE:GetCurrentSong():GetDisplayArtist()
 
-	t[#t+1] = LoadActor("top_title")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP+100;horizalign,center;zoomx,0;zoomy,1;sleep,0.5;linear,0.2;zoomx,1);
+t[#t+1] = Def.ActorFrame {
+	--OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP+149;);
+	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP+50;);
+	
+	LoadActor("top_title")..{
+		InitCommand=cmd(horizalign,center;zoomx,0;zoomy,1;sleep,0.5;linear,0.2;zoomx,1);
 		OffCommand=cmd(decelerate,0.5;zoomx,0);
 	};
 
-	--[[t[#t+1] = LoadActor("PlayerGrade", pn)..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X-120+grades_xPos*position,SCREEN_CENTER_Y+100);
-		OffCommand=cmd(linear,0.25;diffusealpha,0);
-	};--]]
-	
-	t[#t+1] = Def.ActorFrame {
-		OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP+149;diffusealpha,0;sleep,1.5;linear,0.75;diffusealpha,1;);
+	LoadFont("_alternategotno2 40px")..{	--SONG + (SUBTITLE)
+		Text=cursong:GetDisplayFullTitle();
+		InitCommand=cmd(zoom,.6;diffuse,0,0,0,1;horizalign,center;maxwidth,1250;y,24);
 		OffCommand=cmd(decelerate,0.5;diffusealpha,0);
-	
-		LoadFont("_alternategotno2 40px")..{	--SONG + (SUBTITLE)
-			InitCommand=cmd(zoom,1;diffuse,0,0,0,1;horizalign,center;settext,cursong:GetDisplayFullTitle();maxwidth,1250);
-			OnCommand=function(self)
-				if GAMESTATE:IsCourseMode() then
-					self:settext(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle());
-				end;
+		OnCommand=function(self)
+			(cmd(diffusealpha,0;sleep,1.5;linear,0.75;diffusealpha,1;))(self)
+			if GAMESTATE:IsCourseMode() then
+				self:settext(GAMESTATE:GetCurrentCourse():GetDisplayFullTitle());
 			end;
-		};
+		end;
 	};
+};
 
 return t;
