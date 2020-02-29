@@ -5,7 +5,7 @@ can finally make a 1:1 DDR II theme!
 -Rhythm Lunatic
 ]]
 local numWheelItems = 15
-local wheelAnimTime = .2
+local wheelAnimTime = .1
 
 local GROUPWHEEL_GROUPS;
 if getenv("PlayMode") == "Missions" then
@@ -27,9 +27,9 @@ local item_mt_course= {
 				-- Setting self.container to point to the actor gives a convenient
 				-- handle for manipulating the actor.
 		  		self.container= subself
-		  		subself:SetDrawByZPosition(true):vanishpoint(SCREEN_CENTER_X,SCREEN_CENTER_Y);
+		  		subself:SetDrawByZPosition(true):vanishpoint(SCREEN_CENTER_X,SCREEN_CENTER_Y-150);
 		  		subself:fov(60);
-		  		--subself:zoom(.75);
+		  		subself:zoom(.75);
 			end;
 				
 
@@ -274,11 +274,11 @@ local function inputs(event)
 					local offsetFromFocus = item_index-courseScroller.focus_pos
 					self.container:stoptweening():decelerate(1)
 					if offsetFromFocus==0 then
-						self.container:rotationy(360):x(0);
+						self.container:rotationy(360):x(0):y(100);
 					elseif offsetFromFocus > 0 then
-						self.container:addx(SCREEN_WIDTH*.8);
+						self.container:addx(SCREEN_WIDTH*.8):y(100);
 					else
-						self.container:addx(-SCREEN_WIDTH*.8);
+						self.container:addx(-SCREEN_WIDTH*.8):y(100);
 					end;
 					--self.container:stoptweening():linear(.3):rotationy(360):sleep(0):rotationy(0);
 				end)
@@ -430,7 +430,7 @@ local s = Def.ActorFrame{
 }
 --THE BACKGROUND VIDEO
 --s[#s+1] = LoadActor(THEME:GetPathG("","background/common_bg"))..{};
-s[#s+1] = courseScroller:create_actors("foo", numWheelItems, item_mt_course, SCREEN_CENTER_X, SCREEN_CENTER_Y-80);
+s[#s+1] = courseScroller:create_actors("foo", numWheelItems, item_mt_course, SCREEN_CENTER_X, SCREEN_CENTER_Y-135);
 --s[#s+1] = LoadActor("difficultyIcons");
 --s[#s+1] = LoadActor("coursePreview");
 
