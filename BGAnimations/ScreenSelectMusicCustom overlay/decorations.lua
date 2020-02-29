@@ -6,18 +6,17 @@ local t = Def.ActorFrame{};
 t[#t+1] = Def.ActorFrame{
 
 	-- CURRENT SONG NAME
-		LoadFont("_charter bt 40px")..{	
+		LoadFont("_charter bt 40px")..{
 			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP-50;zoom,.75;maxwidth,700;diffusealpha,0);
 			OnCommand=cmd(sleep,0.5;decelerate,0.5;addy,75);
 			OffCommand=cmd(decelerate,0.15;zoom,0);
 			CurrentSongChangedMessageCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong()
+				local song = GAMESTATE:GetCurrentSong()
 				if song then
 					self:settext(song:GetDisplayFullTitle());
-					self:finishtweening();self:diffusealpha(0);
-					self:decelerate(0);self:diffusealpha(1);
+					self:diffusealpha(1);
 				else
-					self:stoptweening();self:linear(0);self:diffusealpha(0);
+					self:diffusealpha(0);
 				end;
 			end;
 
@@ -31,10 +30,9 @@ t[#t+1] = Def.ActorFrame{
 			local song = GAMESTATE:GetCurrentSong();
 				if song then
 					self:settext(song:GetDisplayArtist());
-					self:finishtweening();self:diffusealpha(0);
-					self:decelerate(0);self:diffusealpha(1);
+					self:diffusealpha(1);
 				else
-					self:stoptweening();self:linear(0);self:diffusealpha(0);
+					self:diffusealpha(0);
 				end;
 			end;
 
