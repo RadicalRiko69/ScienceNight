@@ -37,7 +37,7 @@ t[#t+1] = LoadActor("AR Results")..{OnCommand=cmd(play)};	--Music
 
 --Fix it for multiplayer I guess
 assert(GAMESTATE:IsSideJoined(GAMESTATE:GetMasterPlayerNumber()),"No players are joined. You shouldn't be able to get this far.")
-t[#t+1] = LoadActor("DanceGrade",pn)
+t[#t+1] = LoadActor("DanceGrade",GAMESTATE:GetMasterPlayerNumber())
 
 --[[for pn in ivalues(GAMESTATE:GetHumanPlayers()) do	
 	t[#t+1] = LoadActor("DanceGrade",pn);
