@@ -1,3 +1,5 @@
+local player = ...
+
 local NumSongsToLevelUp = 4
 local MaxLevel=100
 
@@ -42,16 +44,36 @@ local function rectGen(width, height, lineSize, lineColor, bgColor)
     };
 end;
 
+local function getProfileName(player)
+	local profile = PROFILEMAN:GetProfile(player)
+	local name = profile:GetDisplayName()
+	--SCREENMAN:SystemMessage(name)
+	
+	if MEMCARDMAN:GetCardState(player) == 'MemoryCardState_none' then
+		--If name is blank, it's probably the machine profile... After all, the name entry screen doesn't allow blank names.
+		if name == "" then		
+			if player == PLAYER_1 then
+				return "PLAYER 1"
+			else
+				return "PLAYER 2"
+			end;
+		else
+			--TODO: Adjust maxwidth based on the number of hearts per play.
+			return name
+		end
+	else
+		return name;
+	end
+end;
+
 return Def.ActorFrame{
-	InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM+25);
-	OnCommand=cmd(decelerate,0.5;addy,-55;diffusealpha,1);
-	OffCommand=cmd(decelerate,0.5;addy,55;diffusealpha,0);
+
 	Def.Sprite{
-		Texture="altBanner";
+		Texture="Remilia";
 	};
 	
 	Def.Quad{
-		InitCommand=cmd(diffuse,color("#000000BB");horizalign,left;vertalign,bottom;setsize,200,5;xy,-250/2+50,25);
+		InitCommand=cmd(diffuse,color("#00000099");horizalign,left;vertalign,bottom;setsize,200,5;xy,-250/2+50,25);
 	};
 	Def.Quad{
 		--setsize(200*percent)
@@ -66,14 +88,7 @@ return Def.ActorFrame{
 	    --The vertical alignment on this font is beyond stupid
     LoadFont("_alternategotno2 40px")..{
         InitCommand=cmd(zoom,.5;horizalign,left;vertalign,top;xy,-70,-25;skewx,-.2);
-		--Text=THEME:GetString("Common","Username");
-		--[[
-		Return string before '.' character:
-		:match("[^.]+")
-		ex. local str = "Nine The Phantom.jpg"
-		str:match("[^.]+") -> Nine The Phantom
-		]]
-		Text=ThemePrefs.Get("ProfilePictures"):match("[^.]+")
+		Text=getProfileName(player);
 	};
 	LoadFont("extras/_bebas neue 40px")..{
 		Text="Lv.";
