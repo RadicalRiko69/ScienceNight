@@ -1,3 +1,14 @@
+local NumSongsToLevelUp = 4
+local MaxLevel=100
+
+local function calcPlayerLevel(numSongsPlayed)
+	if numSongsPlayed > MaxLevel*NumSongsToLevelUp then
+		return MaxLevel;
+	else
+		return numSongsPlayed/NumSongsToLevelUp
+	end;
+end
+
 local function rectGen(width, height, lineSize, lineColor, bgColor)
     return Def.ActorFrame{
     

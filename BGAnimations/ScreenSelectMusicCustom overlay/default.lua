@@ -10,9 +10,10 @@ local wheelAnimTime = .1
 local isMissionMode = (getenv("PlayMode") == "Missions")
 --Only used during quest mode. Although quest mode DOES support two players if you really want it to.
 local MasterPlayer = GAMESTATE:GetMasterPlayerNumber()
+assert(GAMESTATE:IsSideJoined(MasterPlayer),"No players are joined, your version of SM is wrong...");
 
 --I don't know why this is required
-GAMESTATE:JoinPlayer(MasterPlayer)
+--GAMESTATE:JoinPlayer(MasterPlayer)
 local GROUPWHEEL_GROUPS;
 if isMissionMode then
 	GROUPWHEEL_GROUPS = MISSION_GROUPS;

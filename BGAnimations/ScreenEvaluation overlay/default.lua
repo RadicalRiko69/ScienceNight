@@ -34,9 +34,14 @@ t[#t+1] = Def.ActorFrame {
 
 t[#t+1] = LoadActor("AR Results")..{OnCommand=cmd(play)};	--Music
 
-for pn in ivalues(GAMESTATE:GetHumanPlayers()) do	
+
+--Fix it for multiplayer I guess
+assert(GAMESTATE:IsSideJoined(GAMESTATE:GetMasterPlayerNumber()),"No players are joined. You shouldn't be able to get this far.")
+t[#t+1] = LoadActor("DanceGrade",pn)
+
+--[[for pn in ivalues(GAMESTATE:GetHumanPlayers()) do	
 	t[#t+1] = LoadActor("DanceGrade",pn);
-end;
+end;]]
 
 t[#t+1] = LoadActor("music (loop)")..{						
 		InitCommand=cmd(sleep,3.5;queuecommand,"PlaySound");
