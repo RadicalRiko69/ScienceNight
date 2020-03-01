@@ -65,9 +65,9 @@ local fx =			1.8-intw			--sound effect sleep time
 local inc =			0.15				--increment time between items
 
 --Positioning of the numbers, depending on if you're playing Player 1 or Player 2.
-local xPosition = (player == PLAYER_1) and SCREEN_LEFT+250 or SCREEN_CENTER_X+500;
+local xPosition = SCREEN_LEFT+250
 --See above.
-local alignment = (player == PLAYER_1) and left or right;
+local alignment = left;
 for i = 1,#datalabelslist,1 do
 
 	
