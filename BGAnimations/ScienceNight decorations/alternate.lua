@@ -1,5 +1,5 @@
 local player = ...
-
+assert(player,"Need to supply a player, idiot");
 local NumSongsToLevelUp = 4
 local MaxLevel=100
 
@@ -69,7 +69,7 @@ end;
 return Def.ActorFrame{
 
 	Def.Sprite{
-		Texture="Remilia";
+		Texture=THEME:GetPathG("","NamePlates/"..ActiveModifiers[pname(player)]['ProfileFrame']);
 	};
 	
 	Def.Quad{
@@ -81,7 +81,7 @@ return Def.ActorFrame{
 	};
 
 	Def.Sprite{
-		Texture=THEME:GetPathG("","Avatars/"..ThemePrefs.Get("ProfilePictures"));
+		Texture=getenv("profile_icon_"..pname(player));
 		InitCommand=cmd(zoomto,50,50;x,-250/2+.5;horizalign,left);
 	};
 	rectGen(250,50,1.5,color("#000000FF"),color("#00000000"));

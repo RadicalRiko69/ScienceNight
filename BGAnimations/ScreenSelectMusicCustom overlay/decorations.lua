@@ -1,6 +1,3 @@
---do return Def.ActorFrame{} end;
-
---local t = LoadFallbackB();
 local t = Def.ActorFrame{};
 
 t[#t+1] = Def.ActorFrame{

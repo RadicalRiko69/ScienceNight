@@ -1,24 +1,23 @@
---Uncomment to enable alternate nameplates
---You probably need 1080p to see them
 
---[[local function genPlayerFrame(player, xPos)
-	return LoadActor("alternate",player)..{
-		InitCommand=cmd(xy,xPos,SCREEN_BOTTOM+25);
-		OnCommand=cmd(decelerate,0.5;addy,-55;diffusealpha,1);
-		OffCommand=cmd(decelerate,0.5;addy,55;diffusealpha,0);
-	}
-end;
+--Alternate nameplates, have to enable them in theme options.
+if ThemePrefs.Get("AlternateProfileDisplay") then
+	local function genPlayerFrame(player, xPos)
+		return LoadActor("alternate",player)..{
+			InitCommand=cmd(xy,xPos,SCREEN_BOTTOM+25);
+			OnCommand=cmd(decelerate,0.5;addy,-55;diffusealpha,1);
+			OffCommand=cmd(decelerate,0.5;addy,55;diffusealpha,0);
+		}
+	end;
 
-do
 	if GAMESTATE:GetNumSidesJoined() == 1 then
-		return genPlayerFrame(player,SCREEN_CENTER_X);
+		return Def.ActorFrame{ genPlayerFrame(GAMESTATE:GetMasterPlayerNumber(),SCREEN_CENTER_X) };
 	else
 		return Def.ActorFrame{
 			genPlayerFrame(PLAYER_1,SCREEN_WIDTH*.35);
 			genPlayerFrame(PLAYER_2,SCREEN_WIDTH*.65);
 		}
 	end;
-end;]]
+end;
 
 local function getProfileName(player)
 	local profile = PROFILEMAN:GetProfile(player)
@@ -47,7 +46,7 @@ local function genPlayerFrame(player, xPos)
 		InitCommand=cmd(x,xPos;y,SCREEN_BOTTOM;diffusealpha,0);
 		OnCommand=cmd(decelerate,0.5;diffusealpha,1);
 		Def.Sprite{
-			Texture=THEME:GetPathG("","Avatars/"..ThemePrefs.Get("ProfilePictures"));
+			Texture=getenv("profile_icon_"..pname(player));
 		    InitCommand=cmd(zoomto,40,40);
 		    OnCommand=cmd(decelerate,0.5;addy,-50;diffusealpha,1);
 		    OffCommand=cmd(decelerate,0.5;addy,50;diffusealpha,0);

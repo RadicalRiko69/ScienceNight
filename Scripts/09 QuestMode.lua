@@ -61,7 +61,7 @@ end;
 
 QUESTMODE.GetSaveDataPath=function(self,player)
 	local profileDir = PROFILEMAN:GetProfileDir(ProfileSlot[PlayerNumber:Reverse()[player]+1])
-	assert(profileDir ~= '',"No profile is loaded. Cannot save mission data.")
+	assert(profileDir ~= '',"No profile is loaded for "..player.." ("..ProfileSlot[PlayerNumber:Reverse()[player]+1].."). Cannot load/save mission data.")
 	return profileDir..self.savefile
 end;
 
@@ -82,7 +82,6 @@ QUESTMODE.CheckAndUpdateMissionStatus=function(self,player)
 	assert(self.currentWorld, "current world string not set!")
 	assert(self[player][self.currentWorld], pname(player).." table does not contain the world '"..self.currentWorld.."'. This is a fatal error, you will have to recreate your save file.")
 	assert(self[player][self.currentWorld][GAMESTATE:GetCurrentSong():GetTranslitFullTitle()],"The "..pname(player).." table doesn't have the current song! Current World: "..self.currentWorld);
-	
 	
 	local curIndex = GetCurrentStepsIndex(player,GAMESTATE:GetCurrentSong():GetAllSteps())
 	assert(curIndex, "No valid steps?")

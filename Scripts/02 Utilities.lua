@@ -15,6 +15,19 @@ function getJacketOrBanner(song)
 	end;
 end;
 
+--This is honestly only ever called in ScreenOptionsCustomizeProfile so it's kind of useless
+function getProfileIcons()
+    local fullPath = THEME:GetPathG("","Avatars")
+    local files = FILEMAN:GetDirListing(fullPath.."/")
+    return files;
+    --[[local avatars = {}
+
+    for k,filename in ipairs(files) do
+        avatars[#avatars+1] = filename
+    end
+    return avatars;]]
+end;
+
 function strArrayToString(a)
 	local s = "";
 	for i = 1, #a do

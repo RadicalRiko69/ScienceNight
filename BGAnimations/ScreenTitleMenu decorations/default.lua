@@ -1,6 +1,7 @@
 return Def.ActorFrame {
 	InitCommand=function(self)
-		QUESTMODE:Reset();
+		--Reset the vars, player options, etc here.
+		ResetGame();
 	end;
     LoadActor("science_night running")..{
         InitCommand=cmd(zoom,0.4;x,SCREEN_LEFT-500;y,SCREEN_CENTER_Y);

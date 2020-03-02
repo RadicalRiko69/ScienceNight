@@ -12,11 +12,11 @@ local Prefs =
 		Choices = { OptionNameString('Off'), OptionNameString('On') },
 		Values = { false, true }
 	},]]
-	ProfilePictures = 
+	AlternateProfileDisplay =
 	{
-		Default = "ScienceNight",
-		Choices = {"ScienceNight", "_tokyotitan_", "Gio", "Nine The Phantom", "Sangvis Ferri"},
-		Values = {"ScienceNight.png", "Touka", "Gio", "Nine The Phantom.jpg","Sangvis Ferri.gif"}
+		Default = false,
+		Choices = { OptionNameString('Off'), OptionNameString('On') },
+		Values = { false, true }
 	},
 	GameplayShowStepsDisplay = 
 	{
