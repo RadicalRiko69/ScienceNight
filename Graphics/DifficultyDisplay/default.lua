@@ -124,9 +124,9 @@ for i=1,12 do
 							self:setstate(2);
 						elseif steps:GetStepsType() == "StepsType_Pump_Double" then
 							--Check for StepF2 Double Performace tag
-							if string.find(steps:GetDescription(), "Parallel") then
+							if string.find(steps:GetDescription(), "Double Performance") then
 								self:setstate(0);
-							elseif string.find(steps:GetDescription(), "NightMare") then
+							elseif string.find(steps:GetDescription(), "Single Performance") then
 								self:setstate(5);
 							else
 								self:setstate(6);
@@ -145,8 +145,8 @@ for i=1,12 do
 			end
 		};
 
-		LoadFont("extras/_zona pro bold outline 40px")..{
-			InitCommand=cmd(zoom,0.4;shadowlength,0.8;shadowcolor,color("0,0,0,1");x,baseX-0.33+spacing*(i-1);y,baseY-0.33;);
+		LoadFont("_dotty matrix 40px")..{
+			InitCommand=cmd(zoom,0.4;x,baseX-0.03+spacing*(i-1);y,baseY-0.33;);
 			CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Refresh");
 			CurrentStepsP2ChangedMessageCommand=cmd(playcommand,"Refresh");
 			CurrentSongChangedMessageCommand=cmd(playcommand,"Refresh");

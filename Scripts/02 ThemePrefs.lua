@@ -15,8 +15,8 @@ local Prefs =
 	ProfilePictures = 
 	{
 		Default = "ScienceNight",
-		Choices = {"ScienceNight", "Nine The Phantom", "Sangvis Ferri"},
-		Values = {"ScienceNight.png", "Nine The Phantom.jpg","Sangvis Ferri.gif"}
+		Choices = {"ScienceNight", "_tokyotitan_", "Gio", "Nine The Phantom", "Sangvis Ferri"},
+		Values = {"ScienceNight.png", "Touka", "Gio", "Nine The Phantom.jpg","Sangvis Ferri.gif"}
 	},
 	GameplayShowStepsDisplay = 
 	{

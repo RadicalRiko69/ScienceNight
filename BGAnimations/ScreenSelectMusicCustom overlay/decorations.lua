@@ -44,26 +44,26 @@ t[#t+1] = Def.ActorFrame{
 	InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+10);
 	
 	LoadActor(THEME:GetPathG("","DifficultyDisplay"))..{
-		InitCommand=cmd(zoom,0;y,50);
-		OnCommand=cmd(sleep,0.5;decelerate,0.5;zoom,1.5);
-		SongChosenMessageCommand=cmd(decelerate,0.05;zoom,2);
-		SongUnchosenMessageCommand=cmd(decelerate,0.05;zoom,1.5);
+		InitCommand=cmd(zoom,0;y,0);
+		OnCommand=cmd(sleep,0.5;decelerate,0.5;zoom,1.25);
+		SongChosenMessageCommand=cmd(decelerate,0.05;addy,10;zoom,1.8);
+		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-10;zoom,1.25);
 		OffCommand=cmd(decelerate,0.15;zoom,0);
 	};
 		--BPM DISPLAY
 	LoadFont("_charter bt 40px")..{
 		Text="BPM:";
-		InitCommand=cmd(x,-220;y,95;zoom,0.6;diffusealpha,0;sleep,1;linear,1;diffusealpha,1;horizalign,left);
-		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,10);
-		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-10);
+		InitCommand=cmd(x,-200;y,40;zoom,0.5;diffusealpha,0;sleep,1;linear,1;diffusealpha,1;horizalign,left);
+		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,20);
+		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-20);
 		OffCommand=cmd(visible,false);
 	};
 	
 	--add 80 to the x value
 	LoadFont("_charter bt 40px")..{
-		InitCommand=cmd(horizalign,left;x,-150;y,95;zoom,0.6;maxwidth,200;diffusealpha,0;sleep,1;linear,1;diffusealpha,1;);
-		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,10);
-		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-10);
+		InitCommand=cmd(horizalign,left;x,-140;y,40;zoom,0.5;maxwidth,200;diffusealpha,0;sleep,1;linear,1;diffusealpha,1;);
+		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,20);
+		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-20);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 
@@ -129,7 +129,7 @@ t[#t+1] = Def.ActorFrame{
 	};]]
 
 	LoadFont("_charter bt 40px")..{
-		InitCommand=cmd(horizalign,left;xy,-175,-0;zoom,0.7;maxwidth,500;diffusealpha,0;sleep,1;linear,1;diffusealpha,1);
+		InitCommand=cmd(horizalign,center;xy,0,-40;zoom,0.5;maxwidth,800;diffusealpha,0;sleep,1;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 			if GAMESTATE:GetCurrentSong() then
@@ -160,20 +160,20 @@ t[#t+1] = Def.ActorFrame{
 
 	--help text
 	LoadFont("_alternategotno2 40px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160;zoom,.6;diffusealpha,0;valign,.65;maxwidth,350);
+		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160;zoom,.6;diffusealpha,0;valign,.65;maxwidth,500);
 		OnCommand=cmd(sleep,1.5;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
-		Text="Select any song and pick a chart!";
+		Text="Select any song you desire!";
 		--[[CurrentSongChangedMessageCommand=function(self)
 			self:settext("Select a song and clear its requirements!");
 			(cmd(linear,0.25;zoom,1)) (self)
 		end;]]
 		SongChosenMessageCommand=function(self)
-			self:settext("Select a stepchart and press CENTER step.");
+			self:settext("Select a stepchart.");
 			--(cmd(linear,0.25;zoom,1)) (self)
 		end;
 		SongUnchosenMessageCommand=function(self)
-			self:settext("Select any song and pick a chart!");
+			self:settext("Select any song you desire!");
 			--(cmd(linear,0.25;zoom,1)) (self)
 		end;
 	};
