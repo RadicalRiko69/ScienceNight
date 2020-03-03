@@ -1,17 +1,21 @@
 local t = Def.ActorFrame {};
 
+--I know I could just load directly from graphics but panicked.
+-- ~Gio
+
 t[#t+1] = Def.ActorFrame {
 	Def.Sprite {
-		Name="animation",
-		Texture="LoadScreen diamond 5x2.png",
+		Name="background",
+		Texture="BG.png",
 		InitCommand=function(self)
-			self:SetAllStateDelays(0.1):diffusealpha(1):diffuse(color("#981F41")):Center()
-		end,
-		OnCommand=function(self)
-			self:zoom(0):decelerate(0.25):zoom(0)
+			self:zoomto(SCREEN_WIDTH,SCREEN_HEIGHT):Center()
 		end;
-		OffCommand=function(self)
-			self:decelerate(0.25):zoom(0)
+	};
+	Def.Sprite {
+		Name="logo",
+		Texture="logo.png",
+		InitCommand=function(self)
+			self:zoomto(SCREEN_WIDTH,SCREEN_HEIGHT):Center()
 		end;
 	};
 };

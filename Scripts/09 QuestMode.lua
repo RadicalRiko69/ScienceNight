@@ -42,7 +42,7 @@ The mission groups that will be used for P ScienceNight.
 They're in order, so you have to clear the first mission group to unlock the next, etc...
 ]]
 MISSION_GROUPS = {
-	"April Fools"
+	"World 1"
 }
 
 -- 'QUESTMODEMAN' was a bit too verbose

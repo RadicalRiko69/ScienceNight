@@ -5,7 +5,7 @@ t[#t+1] = Def.ActorFrame{
 	-- CURRENT SONG NAME
 		LoadFont("_charter bt 40px")..{
 			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP-50;zoom,.75;maxwidth,700;diffusealpha,0);
-			OnCommand=cmd(sleep,0.5;decelerate,0.5;addy,75);
+			OnCommand=cmd(sleep,0.25;decelerate,0.5;addy,75);
 			OffCommand=cmd(decelerate,0.15;zoom,0);
 			CurrentSongChangedMessageCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong()
@@ -21,7 +21,7 @@ t[#t+1] = Def.ActorFrame{
 		-- CURRENT SONG ARTIST
 		LoadFont("_charter bt 40px")..{	
 			InitCommand=cmd(zoom,.5;maxwidth,900;diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_TOP-100);
-			OnCommand=cmd(sleep,0.5;decelerate,0.5;addy,150);
+			OnCommand=cmd(sleep,0.25;decelerate,0.5;addy,150);
 			OffCommand=cmd(decelerate,0.15;zoom,0);
 			CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
@@ -42,7 +42,7 @@ t[#t+1] = Def.ActorFrame{
 	
 	LoadActor(THEME:GetPathG("","DifficultyDisplay"))..{
 		InitCommand=cmd(zoom,0;y,0);
-		OnCommand=cmd(sleep,0.5;decelerate,0.5;zoom,1.25);
+		OnCommand=cmd(sleep,0.25;decelerate,0.5;zoom,1.25);
 		SongChosenMessageCommand=cmd(decelerate,0.05;addy,10;zoom,1.8);
 		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-10;zoom,1.25);
 		OffCommand=cmd(decelerate,0.15;zoom,0);
@@ -50,7 +50,7 @@ t[#t+1] = Def.ActorFrame{
 		--BPM DISPLAY
 	LoadFont("_charter bt 40px")..{
 		Text="BPM:";
-		InitCommand=cmd(x,-200;y,40;zoom,0.5;diffusealpha,0;sleep,1;linear,1;diffusealpha,1;horizalign,left);
+		InitCommand=cmd(x,-200;y,40;zoom,0.5;diffusealpha,0;sleep,0.7;linear,1;diffusealpha,1;horizalign,left);
 		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,20);
 		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-20);
 		OffCommand=cmd(visible,false);
@@ -58,7 +58,7 @@ t[#t+1] = Def.ActorFrame{
 	
 	--add 80 to the x value
 	LoadFont("_charter bt 40px")..{
-		InitCommand=cmd(horizalign,left;x,-140;y,40;zoom,0.5;maxwidth,200;diffusealpha,0;sleep,1;linear,1;diffusealpha,1;);
+		InitCommand=cmd(horizalign,left;x,-140;y,40;zoom,0.5;maxwidth,200;diffusealpha,0;sleep,0.7;linear,1;diffusealpha,1;);
 		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,20);
 		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-20);
 		OffCommand=cmd(visible,false);
@@ -90,14 +90,14 @@ t[#t+1] = Def.ActorFrame{
 	--LENGTH DISPLAY
 	LoadFont("_charter bt 40px")..{
 		Text="LENGTH:";
-		InitCommand=cmd(x,40;y,40;zoom,0.5;diffusealpha,0;sleep,1;linear,1;diffusealpha,1;horizalign,left);
+		InitCommand=cmd(x,40;y,40;zoom,0.5;diffusealpha,0;sleep,0.7;linear,1;diffusealpha,1;horizalign,left);
 		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,20);
 		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-20);
 		OffCommand=cmd(visible,false);
 	};
 
 	LoadFont("_charter bt 40px")..{
-		InitCommand=cmd(horizalign,left;x,140;y,40;zoom,0.5;maxwidth,120;diffusealpha,0;sleep,1;linear,1;diffusealpha,1);
+		InitCommand=cmd(horizalign,left;x,140;y,40;zoom,0.5;maxwidth,120;diffusealpha,0;sleep,0.7;linear,1;diffusealpha,1);
 		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,20);
 		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-20);
 		OffCommand=cmd(visible,false);
@@ -123,7 +123,7 @@ t[#t+1] = Def.ActorFrame{
 	};]]
 
 	LoadFont("_charter bt 40px")..{
-		InitCommand=cmd(horizalign,center;xy,0,-40;zoom,0.5;maxwidth,800;diffusealpha,0;sleep,1;linear,1;diffusealpha,1);
+		InitCommand=cmd(horizalign,center;xy,0,-40;zoom,0.5;maxwidth,800;diffusealpha,0;sleep,0.7;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 			if GAMESTATE:GetCurrentSong() then
@@ -141,21 +141,21 @@ t[#t+1] = Def.ActorFrame{
 
 	LoadActor("arrows")..{
 		InitCommand=cmd(zoom,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
-		OnCommand=cmd(sleep,0.5;decelerate,0.5;zoom,1);
+		OnCommand=cmd(sleep,0.25;decelerate,0.5;zoom,1);
 		OffCommand=cmd(decelerate,0.5;zoom,0);
 	};
 
 	Def.Sprite{
 		Texture="pill",
 		InitCommand=cmd(zoom,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160);
-		OnCommand=cmd(sleep,0.75;decelerate,0.5;zoom,1);
+		OnCommand=cmd(sleep,0.45;decelerate,0.5;zoom,1);
 		OffCommand=cmd(decelerate,0.5;zoom,0);
 	};
 
 	--help text
 	LoadFont("_alternategotno2 40px")..{
 		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160;zoom,.6;diffusealpha,0;valign,.65;maxwidth,500);
-		OnCommand=cmd(sleep,1.5;linear,1;diffusealpha,1);
+		OnCommand=cmd(sleep,1.2;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
 		Text="Select any song you desire!";
 		--[[CurrentSongChangedMessageCommand=function(self)
@@ -215,25 +215,25 @@ t[#t+1] = Def.ActorFrame{
 	LoadFont("_alternategotno2 40px")..{
 		Text="Select Group";
 		InitCommand=cmd(x,SCREEN_LEFT+60;y,5;horizalign,left;vertalign,top;skewx,-0.2;zoom,.6;diffusealpha,0);
-		OnCommand=cmd(sleep,1;linear,1;diffusealpha,1);
+		OnCommand=cmd(sleep,0.5;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
 	};
 	LoadFont("_alternategotno2 40px")..{
 		Text="Select Group";
 		InitCommand=cmd(x,SCREEN_RIGHT-60;y,5;horizalign,right;vertalign,top;skewx,-0.2;zoom,.6;diffusealpha,0);
-		OnCommand=cmd(sleep,1;linear,1;diffusealpha,1);
+		OnCommand=cmd(sleep,0.5;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
 	};
 	LoadFont("_alternategotno2 40px")..{
 		Text="Previous Song";
 		InitCommand=cmd(x,SCREEN_LEFT+60;y,SCREEN_BOTTOM-10;horizalign,left;vertalign,bottom;skewx,-0.2;zoom,.6;diffusealpha,0);
-		OnCommand=cmd(sleep,1;linear,1;diffusealpha,1);
+		OnCommand=cmd(sleep,0.5;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
 	};
 	LoadFont("_alternategotno2 40px")..{
 		Text="Next Song";
 		InitCommand=cmd(x,SCREEN_RIGHT-60;y,SCREEN_BOTTOM-10;horizalign,right;vertalign,bottom;skewx,-0.2;zoom,.6;diffusealpha,0);
-		OnCommand=cmd(sleep,1;linear,1;diffusealpha,1);
+		OnCommand=cmd(sleep,0.5;linear,1;diffusealpha,1);
 		OffCommand=cmd(visible,false);
 	};
 };
