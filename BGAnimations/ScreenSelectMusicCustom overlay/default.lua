@@ -382,7 +382,7 @@ local function inputs(event)
 			SCREENMAN:set_input_redirected(PLAYER_2, false);]]
 			--currentGroup = SONGMAN:GetSongsInGroup(GROUPWHEEL_GROUPS[groupSelection],true)
 			assert(GAMESTATE:GetCurrentSong(),"Song is nil! Can't continue!");
-			stepsArray = GAMESTATE:GetCurrentSong():GetAllSteps();
+			stepsArray = SongUtil.GetPlayableSteps(GAMESTATE:GetCurrentSong());
 			--assert(#stepsArray > 0,"Hey idiot, this song has no valid steps.")
 			if seekFirstValidSteps(pn,'StepsType_Pump_Single') then
 				GAMESTATE:SetCurrentSteps(pn,stepsArray[stepsSelection]);

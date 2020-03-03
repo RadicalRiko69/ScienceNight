@@ -48,7 +48,8 @@ t[#t+1] = Def.ActorFrame{
 			self:stoptweening();
 			local song = GAMESTATE:GetCurrentSong();
 			if song then
-				stepsArray = song:GetAllSteps();
+				--stepsArray = song:GetAllSteps();
+				stepsArray = SongUtil.GetPlayableSteps(song);
 				--Doesn't work with quest mode.
 				--table.sort(stepsArray, SortCharts)
 				
