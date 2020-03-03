@@ -69,7 +69,7 @@ end;
 return Def.ActorFrame{
 
 	Def.Sprite{
-		Texture=THEME:GetPathG("","NamePlates/"..ActiveModifiers[pname(player)]['ProfileFrame']);
+		Texture=THEME:GetPathG("","NamePlates/"..(ActiveModifiers[pname(player)]['ProfileFrame'] or "Cirno"));
 	};
 	
 	Def.Quad{

@@ -196,7 +196,10 @@ local item_mt_group= {
 
 
 local stepsArray;
-local stepsSelection = 1;
+local stepsSelection = {
+	PLAYER_1 = 1,
+	PLAYER_2 = 1
+}
 --Copypasted from the source of ScreenSelectMusic.cpp
 --[[local function ChangePreferredDifficulty(pn,dir)
 	local d = Enum.Reverse(Difficulty)[GAMESTATE:GetPreferredDifficulty(pn)]
@@ -223,7 +226,7 @@ local function ChangeSteps(pn,dir)
 	end;
 end;]]
 
-local function seekFirstValidSteps(pn, style)
+--[[local function seekFirstValidSteps(pn, style)
 	for sel,steps in ipairs(stepsArray) do
 		if steps:GetStepsType() == style then
 			stepsSelection = sel;
@@ -231,10 +234,10 @@ local function seekFirstValidSteps(pn, style)
 		end;
 	end;
 	return false;
-end;
+end;]]
 
 local function ChangeSteps(pn,dir)
-	local selection = stepsSelection + dir
+	local selection = stepsSelection[pn] + dir
 	if selection < #stepsArray+1 and selection > 0 then
 		--SCREENMAN:SystemMessage(stepsSelection.."->"..selection);
 		if isMissionMode then
@@ -242,12 +245,12 @@ local function ChangeSteps(pn,dir)
 			--Check if previous steps has been cleared before allowing selecting next steps.
 			if selection == 1 or progress[selection-1] == true then
 				GAMESTATE:SetCurrentSteps(pn,stepsArray[selection]);
-				stepsSelection = selection;
+				stepsSelection[pn] = selection;
 			end;
 				
 		else
 			GAMESTATE:SetCurrentSteps(pn,stepsArray[selection]);
-			stepsSelection = selection;
+			stepsSelection[pn] = selection;
 		end;
 	end;
 end;
@@ -384,8 +387,14 @@ local function inputs(event)
 			assert(GAMESTATE:GetCurrentSong(),"Song is nil! Can't continue!");
 			stepsArray = SongUtil.GetPlayableSteps(GAMESTATE:GetCurrentSong());
 			--assert(#stepsArray > 0,"Hey idiot, this song has no valid steps.")
-			if seekFirstValidSteps(pn,'StepsType_Pump_Single') then
-				GAMESTATE:SetCurrentSteps(pn,stepsArray[stepsSelection]);
+			
+			--stepsSelection = 1;
+
+			if #stepsArray > 0 then
+				for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+					stepsSelection[pn] = 1;
+					GAMESTATE:SetCurrentSteps(pn,stepsArray[1]);
+				end;
 				--songScroller:set_info_set(currentGroup,1);
 				MESSAGEMAN:Broadcast("SongChosen");
 				--Changing the steps seems to broadcast this anyways, so we don't need to do it
@@ -479,7 +488,7 @@ local t = Def.ActorFrame{
 	end;
 	
 	CodeMessageCommand=function(self,param)
-		if param.Name == "OpenOpList" then
+		if param.Name == "OpenOpList" and curState ~= SELECTING_GROUP then
 			SCREENMAN:AddNewScreenToTop("ScreenPlayerOptions");
 		end;
 	end;

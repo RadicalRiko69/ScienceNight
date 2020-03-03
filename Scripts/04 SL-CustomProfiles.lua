@@ -77,7 +77,7 @@ function LoadProfileCustom(profile, dir, isEdit)
 				if ActiveModifiers[pns]["ProfileIcon"] and FILEMAN:DoesFileExist(THEME:GetPathG("","Avatars").."/"..ActiveModifiers[pns]["ProfileIcon"]) then
 					setenv("profile_icon_"..pns,THEME:GetPathG("","Avatars").."/"..ActiveModifiers[pns]["ProfileIcon"]);
 				else --Still none found, just pick the default one..
-					setenv("profile_icon_"..pns,HEME:GetPathG("","Avatars/ScienceNight.png"));
+					setenv("profile_icon_"..pns,THEME:GetPathG("","Avatars/ScienceNight.png"));
 				end;
 			end;
 
