@@ -86,23 +86,20 @@ t[#t+1] = Def.ActorFrame{
 		end;
 	};
 
-		--LENGTH DISPLAY
+
+	--LENGTH DISPLAY
 	LoadFont("_charter bt 40px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+150;y,SCREEN_CENTER_Y+20;zoom,0.7;diffusealpha,0);
-		OnCommand=cmd(sleep,1;linear,1;diffusealpha,1);
-		SongChosenMessageCommand=cmd(decelerate,0.05;addy,100);
-		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-100);
+		Text="LENGTH:";
+		InitCommand=cmd(x,40;y,40;zoom,0.5;diffusealpha,0;sleep,1;linear,1;diffusealpha,1;horizalign,left);
+		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,20);
+		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-20);
 		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-			self:settext("LENGTH:");
-			(cmd(finishtweening;zoom,0.7)) (self)
-		end;
 	};
 
 	LoadFont("_charter bt 40px")..{
-		InitCommand=cmd(horizalign,left;x,SCREEN_CENTER_X+220;y,SCREEN_CENTER_Y+20;zoom,0.7;maxwidth,120;diffusealpha,0;sleep,1;linear,1;diffusealpha,1);
-		SongChosenMessageCommand=cmd(decelerate,0.05;addy,100);
-		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-100);
+		InitCommand=cmd(horizalign,left;x,140;y,40;zoom,0.5;maxwidth,120;diffusealpha,0;sleep,1;linear,1;diffusealpha,1);
+		SongChosenMessageCommand=cmd(finishtweening;decelerate,0.05;addy,20);
+		SongUnchosenMessageCommand=cmd(decelerate,0.05;addy,-20);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 		if GAMESTATE:GetCurrentSong() then
