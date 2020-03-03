@@ -14,6 +14,11 @@ for i=6,1,-1 do
 		InitCommand=cmd(zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;Center),
 		OnCommand=cmd(diffusealpha,1;sleep,sleep_time;linear,0.10;diffusealpha,0)
 	}
+	t[#t+1] = LoadFont("extras/_zona pro thin 40px") .. {
+		Text="READY!";
+		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+100;skewx,-0.2;zoom,0.5);
+		OnCommand=cmd(diffusealpha,1;sleep,sleep_time;linear,0.10;diffusealpha,0);
+	}
 end
 	
 return t
