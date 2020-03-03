@@ -12,12 +12,12 @@ function GetLocalProfiles()
 				InitCommand=cmd(zoomto,200,1;y,40/2);
 				OnCommand=cmd(diffuse,Color('Outline'););
 			}; --]]
-			LoadFont("Common Fallback") .. {
+			LoadFont("_charter bt 40px") .. {
 				Text=profile:GetDisplayName();
-				InitCommand=cmd(shadowlength,1;y,-12;zoom,1;strokecolor,color("#000000");ztest,true);
+				InitCommand=cmd(shadowlength,1;y,-12;zoom,0.6;maxwidth,400;;strokecolor,color("#000000");ztest,true);
 			};
-			LoadFont("Common Condensed") .. {
-				InitCommand=cmd(shadowlength,1;y,10;zoom,0.7;vertspacing,-8;ztest,true);
+			LoadFont("extras/_zona pro thin 40px") .. {
+				InitCommand=cmd(shadowlength,1;y,10;zoom,0.3;skewx,-0.2;vertspacing,-8;ztest,true);
 				BeginCommand=function(self)
 					local numSongsPlayed = profile:GetNumTotalSongsPlayed();
 					self:settext( string.format( GetSongsPlayedString( numSongsPlayed ), numSongsPlayed ) )
@@ -48,7 +48,7 @@ function LoadPlayerStuff(Player)
 	}; --]]
 	t[#t+1] = Def.ActorFrame {
 		Name = 'JoinFrame';
-		LoadCard(color('#882D47'));
+		LoadCard(color('#777777'));
 --[[ 		Def.Quad {
 			InitCommand=cmd(zoomto,200+4,230+4);
 			OnCommand=cmd(shadowlength,1;diffuse,color("0,0,0,0.5"));
@@ -57,9 +57,9 @@ function LoadPlayerStuff(Player)
 			InitCommand=cmd(zoomto,200,230);
 			OnCommand=cmd(diffuse,Color('Orange');diffusealpha,0.5);
 		}; --]]
-		LoadFont("Common Italic Condensed") .. {
-			Text="Press &START; to join";
-			InitCommand=cmd(shadowlength,1;zoom,1.25);
+		LoadFont("extras/_zona pro thin 40px") .. {
+			Text="Press\nCENTER STEP\nto join";
+			InitCommand=cmd(shadowlength,1;zoom,0.5);
 			OnCommand=cmd(diffuseshift;effectcolor1,Color('White');effectcolor2,color("0.5,0.5,0.5");strokecolor,color("#4A1110"););
 		};
 	};
@@ -97,9 +97,9 @@ function LoadPlayerStuff(Player)
 	t[#t+1] = Def.ActorFrame {
 		Name = "EffectFrame";
 	};
-	t[#t+1] = LoadFont("Common Fallback") .. {
+	t[#t+1] = LoadFont("_alternategotno2 40px") .. {
 		Name = 'SelectedProfileText';
-		InitCommand=cmd(y,160;shadowlength,1;diffuse,color("#FFFFFF");strokecolor,ColorDarkTone(PlayerColor(Player));diffusebottomedge,color("#FFFFFF");zoom,1.25);
+		InitCommand=cmd(y,160;shadowlength,1;maxwidth,350;diffuse,color("#FFFFFF");strokecolor,ColorDarkTone(PlayerColor(Player));diffusebottomedge,color("#FFFFFF");zoom,0.7);
 	};
 
 	return t;
