@@ -134,6 +134,8 @@ for i=1,12 do
 							end;
 						elseif steps:GetStepsType() == "StepsType_Pump_Couple" then
 							self:setstate(5);
+						elseif steps:GetStepsType() == "StepsType_Pump_Halfdouble" then
+							self:setstate(1);
 						elseif steps:GetStepsType() == "StepsType_Pump_Routine" then
 							self:setstate(4);
 						else
