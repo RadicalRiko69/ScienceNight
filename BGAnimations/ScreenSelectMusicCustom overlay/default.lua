@@ -40,7 +40,7 @@ local item_mt_course= {
 		  		self.container= subself
 		  		subself:SetDrawByZPosition(true):vanishpoint(SCREEN_CENTER_X,SCREEN_CENTER_Y-150);
 		  		subself:fov(60);
-		  		subself:zoom(.75);
+		  		subself:zoom(.6);
 			end;
 				
 
@@ -92,8 +92,8 @@ local item_mt_course= {
 			self.container:z(50-offsetFromFocus):rotationy(50)
 			self.container:x(100+spacing*offsetFromCenter);
 		else
-			self.container:x(spacing*.8*offsetFromCenter);
-			self.container:z(200):rotationy(0);
+			self.container:x(spacing*.7*offsetFromCenter);
+			self.container:z(350):rotationy(0);
 		end;
 		self.container:draworder(-offsetFromCenter);
 		--self.container:z(math.abs(offsetFromFocus)*25);

@@ -9,7 +9,7 @@ of keeping strings in the array.
 Yes, songs are pointers.
 ]]
 local redNames = {
-	SONGMAN:FindSong("19-DELTA NEX REBIRTH/666"),
+	SONGMAN:FindSong("ScienceNight/ESCAPE"),
 	SONGMAN:FindSong("19-DELTA NEX REBIRTH/3y3s")
 }
 
@@ -37,9 +37,9 @@ t[#t+1] = Def.ActorFrame{
 					self:settext(song:GetDisplayFullTitle());
 					self:diffusealpha(1);
 					if has_value(redNames,song) then
-						self:diffuseshift():effectcolor1(Color("Red")):effectcolor2(Color("White")):effectperiod(1);
+						self:diffusecolor(color("#b90000"));
 					else
-						self:effectcolor1(Color("White"))
+						self:diffusecolor(Color("White"));
 					end;
 				else
 					self:diffusealpha(0);
@@ -53,10 +53,15 @@ t[#t+1] = Def.ActorFrame{
 			OnCommand=cmd(sleep,0.25;decelerate,0.5;addy,150);
 			OffCommand=cmd(decelerate,0.15;zoom,0);
 			CurrentSongChangedMessageCommand=function(self)
-			local song = GAMESTATE:GetCurrentSong();
+				local song = GAMESTATE:GetCurrentSong()
 				if song then
 					self:settext(song:GetDisplayArtist());
 					self:diffusealpha(1);
+					if has_value(redNames,song) then
+						self:diffusecolor(color("#b90000"));
+					else
+						self:diffusecolor(Color("White"));
+					end;
 				else
 					self:diffusealpha(0);
 				end;
