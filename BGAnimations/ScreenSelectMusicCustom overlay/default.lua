@@ -334,7 +334,7 @@ local function inputs(event)
 					
 					--The current song
 					if offsetFromFocus==0 then
-						self.container:rotationy(360):x(0):y(100):zoom(1.5):GetChild("Glow"):visible(false);
+						self.container:rotationy(360):x(0):y(70):zoom(1):GetChild("Glow"):visible(false);
 					--To the right of the current song
 					elseif offsetFromFocus > 0 then
 						self.container:addx(SCREEN_WIDTH*.8):y(100);
