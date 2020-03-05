@@ -1,5 +1,29 @@
 local t = Def.ActorFrame{};
 
+
+--[[
+A list of songs that should have red names
+Pointer comparison is significantly faster than
+string comparison so use SONGMAN:FindSong() instead
+of keeping strings in the array.
+Yes, songs are pointers.
+]]
+local redNames = {
+	SONGMAN:FindSong("19-DELTA NEX REBIRTH/666"),
+	SONGMAN:FindSong("19-DELTA NEX REBIRTH/3y3s")
+}
+
+local function has_value (tab, val)
+    for index, value in ipairs(tab) do
+        if value == val then
+            return true
+        end
+    end
+
+    return false
+end
+
+
 t[#t+1] = Def.ActorFrame{
 
 	-- CURRENT SONG NAME
@@ -12,6 +36,11 @@ t[#t+1] = Def.ActorFrame{
 				if song then
 					self:settext(song:GetDisplayFullTitle());
 					self:diffusealpha(1);
+					if has_value(redNames,song) then
+						self:diffuseshift():effectcolor1(Color("Red")):effectcolor2(Color("White")):effectperiod(1);
+					else
+						self:effectcolor1(Color("White"))
+					end;
 				else
 					self:diffusealpha(0);
 				end;
