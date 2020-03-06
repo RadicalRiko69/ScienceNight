@@ -169,6 +169,14 @@ t[#t+1] = Def.ActorFrame{
 	};
 }
 
+local helpText = {
+	"Select any song you desire!",
+	"Use &LEFT; and &RIGHT; to select a song.",
+	"Test phrase.",
+	"Test phrase 2."
+}
+local curHelpText = 1;
+
 t[#t+1] = Def.ActorFrame{
 
 
@@ -189,9 +197,24 @@ t[#t+1] = Def.ActorFrame{
 	--help text
 	LoadFont("_alternategotno2 40px")..{
 		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160;zoom,.6;diffusealpha,0;valign,.65;maxwidth,500);
-		OnCommand=cmd(sleep,1.2;linear,1;diffusealpha,1);
+		OnCommand=cmd(sleep,1.2;linear,1;diffusealpha,1;queuecommand,"Set");
 		OffCommand=cmd(visible,false);
 		Text="Select any song you desire!";
+		
+		SetCommand=function(self)
+            if curHelpText+1 > #helpText then
+               	curHelpText = 1
+            else
+                curHelpText = curHelpText+1;
+            end;
+            self:settext(helpText[curHelpText]);
+            self:linear(0.2);
+            self:diffusealpha(1);
+            self:sleep(2);
+            self:linear(0.2)
+            self:diffusealpha(0);
+            self:queuecommand("Set");
+        end;
 		--[[CurrentSongChangedMessageCommand=function(self)
 			self:settext("Select a song and clear its requirements!");
 			(cmd(linear,0.25;zoom,1)) (self)
@@ -201,8 +224,7 @@ t[#t+1] = Def.ActorFrame{
 			--(cmd(linear,0.25;zoom,1)) (self)
 		end;
 		SongUnchosenMessageCommand=function(self)
-			self:settext("Select any song you desire!");
-			--(cmd(linear,0.25;zoom,1)) (self)
+			self:settext(helpText[curHelpText]):queuecommand("Set");
 		end;
 	};
 };
