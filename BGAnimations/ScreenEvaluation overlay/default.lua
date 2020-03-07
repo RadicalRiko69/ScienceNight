@@ -35,9 +35,13 @@ t[#t+1] = Def.ActorFrame {
 t[#t+1] = LoadActor("AR Results")..{OnCommand=cmd(play)};	--Music
 
 
---Fix it for multiplayer I guess
-assert(GAMESTATE:IsSideJoined(GAMESTATE:GetMasterPlayerNumber()),"No players are joined. You shouldn't be able to get this far.")
-t[#t+1] = LoadActor("DanceGrade",GAMESTATE:GetMasterPlayerNumber())
+--assert(GAMESTATE:IsSideJoined(GAMESTATE:GetMasterPlayerNumber()),"No players are joined. You shouldn't be able to get this far.")
+--Yeah it's more code to maintain, but it's not really my job to fix it
+if GAMESTATE:GetNumSidesJoined() == 1 then
+	t[#t+1] = LoadActor("DanceGrade_Single")
+else
+	t[#t+1] = LoadActor("DanceGrade_Multi")
+end;
 
 --[[for pn in ivalues(GAMESTATE:GetHumanPlayers()) do	
 	t[#t+1] = LoadActor("DanceGrade",pn);
