@@ -133,4 +133,14 @@ for player in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		};--]]
 	end;
 end;
+
+t[#t+1] = Def.ActorFrame {
+	Def.Sprite {
+		Name="Banner";
+		Texture=getJacketOrBanner(GAMESTATE:GetCurrentSong());
+		OnCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+170;scaletoclipped,125,125;diffusealpha,0;sleep,1;decelerate,1;diffusealpha,1);
+		OffCommand=cmd(decelerate,0.5;zoom,0;diffusealpha,0);
+	};	
+};
+
 return t

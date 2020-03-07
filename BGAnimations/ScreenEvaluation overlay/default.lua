@@ -23,15 +23,6 @@ local t = Def.ActorFrame {
 	self:zoom(0.57)
 end;]]
 
-t[#t+1] = Def.ActorFrame {
-	Def.Sprite {
-		Name="Banner";
-		Texture=getJacketOrBanner(GAMESTATE:GetCurrentSong());
-		OnCommand=cmd(x,SCREEN_LEFT+250/2;y,SCREEN_CENTER_Y-50;scaletoclipped,150,150;diffusealpha,0;sleep,1;decelerate,1;diffusealpha,1);
-		OffCommand=cmd(decelerate,0.5;zoom,0;diffusealpha,0);
-	};	
-};
-
 t[#t+1] = LoadActor("AR Results")..{OnCommand=cmd(play)};	--Music
 
 
