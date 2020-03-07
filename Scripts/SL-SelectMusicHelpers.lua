@@ -8,16 +8,22 @@ function play_sample_music()
 	local song = GAMESTATE:GetCurrentSong()
 
 	if song then
+	
 		local songpath = song:GetMusicPath()
 		local sample_start = song:GetSampleStart()
 		local sample_len = song:GetSampleLength()
 
-		if songpath and sample_start and sample_len then
-			SOUND:DimMusic(PREFSMAN:GetPreference("SoundVolume"), math.huge)
-			SOUND:PlayMusicPart(songpath, sample_start,sample_len, 0.5, 1.5, true, true)
+		if songpath == song:GetPreviewMusicPath() then
+			if songpath and sample_start and sample_len then
+				SOUND:DimMusic(PREFSMAN:GetPreference("SoundVolume"), math.huge)
+				SOUND:PlayMusicPart(songpath, sample_start,sample_len, 0.5, 1.5, true, true)
+			else
+				stop_music()
+			end
 		else
-			stop_music()
-		end
+			--SOUND:DimMusic(PREFSMAN:GetPreference("SoundVolume"), math.huge)
+			SOUND:PlayMusicPart(song:GetPreviewMusicPath(), 0.0, sample_len, 0.5, 1.5, true, true)
+		end;
 	else
 		stop_music()
 	end
