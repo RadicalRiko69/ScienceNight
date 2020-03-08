@@ -21,8 +21,10 @@ if isMissionMode then
 	if not QUESTMODE[MasterPlayer] then
 		QUESTMODE:LoadCurrentProgress(MasterPlayer)
 	end;
-else
+elseif showAllGroups then
 	GROUPWHEEL_GROUPS = SONGMAN:GetSongGroupNames();
+else
+	GROUPWHEEL_GROUPS = songGroups;
 end;
 
 -- Scroller for the songs
