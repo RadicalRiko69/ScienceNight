@@ -291,7 +291,6 @@ local function updateCurrentSong()
 	--Maybe we should have an assert for a nil song here?
 	GAMESTATE:SetCurrentSong(song)
 	GAMESTATE:SetPreferredSong(song)
-	play_sample_music();
 	MESSAGEMAN:Broadcast("CurrentSongChanged",{Selection=songSelection,Total=#currentGroup});
 end;
 
@@ -423,8 +422,8 @@ local function inputs(event)
 				songScroller:set_info_set(currentGroup,1)
 				songScroller:scroll_to_start();
 				songSelection = 1;
-				GAMESTATE:SetCurrentSong(currentGroup[songSelection])
-				play_sample_music();
+				--GAMESTATE:SetCurrentSong(currentGroup[songSelection])
+				updateCurrentSong();
 			end;
 			MESSAGEMAN:Broadcast("StartSelectingSong");
 			curState = SELECTING_SONG
@@ -480,6 +479,8 @@ local function inputs(event)
 	end;
 end;
 
+
+local SampleMusicDelay = THEME:GetMetric("ScreenSelectMusicCustom","SampleMusicDelay");
 local t = Def.ActorFrame{
 	OnCommand=function(self)
 		SCREENMAN:GetTopScreen():AddInputCallback(inputs);
@@ -492,6 +493,22 @@ local t = Def.ActorFrame{
 			SCREENMAN:AddNewScreenToTop("ScreenPlayerOptions");
 		end;
 	end;
+	
+
+}
+
+
+--I think there's a fake actor class in stepmania, so maybe I should use that instead
+t[#t+1] = Def.ActorFrame{
+	CurrentSongChangedMessageCommand=function(self)
+		stop_music()
+		self:stoptweening():sleep(SampleMusicDelay):queuecommand("Sample");
+	end;
+	
+	SampleCommand=function(self)
+		play_sample_music();
+	end;
+
 }
 
 --songScroller frame
@@ -534,7 +551,6 @@ local g = Def.ActorFrame{
 			setenv("cur_group",prefSong:GetGroupName());
 			songScroller:set_info_set(currentGroup,1)
 			MESSAGEMAN:Broadcast("CurrentSongChanged");
-			play_sample_music();
 		else
 			--Making this an env was completely stupid
 			setenv("cur_group", nil)
