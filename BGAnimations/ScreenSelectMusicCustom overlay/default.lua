@@ -550,6 +550,12 @@ local g = Def.ActorFrame{
 			currentGroup = SONGMAN:GetSongsInGroup(prefSong:GetGroupName(),true)
 			setenv("cur_group",prefSong:GetGroupName());
 			songScroller:set_info_set(currentGroup,1)
+			for key,value in ipairs(currentGroup) do
+				if prefSong == value then
+					songSelection = key;
+				end
+			end;
+			songScroller:scroll_by_amount(songSelection-1)
 			MESSAGEMAN:Broadcast("CurrentSongChanged");
 		else
 			--Making this an env was completely stupid
