@@ -1,5 +1,16 @@
 local t = Def.ActorFrame{};
 
+--[[
+A list of songs that should have red names in the music select
+Pointer comparison is significantly faster than
+string comparison so use SONGMAN:FindSong() instead
+of keeping strings in the array.
+Yes, songs are pointers.
+]]
+local redNames = {
+	SONGMAN:FindSong("ScienceNight/ESCAPE"),
+	SONGMAN:FindSong("19-DELTA NEX REBIRTH/Final Dance")
+}
 
 local function has_value (tab, val)
 	--DON'T CHANGE IT TO IPAIRS IT WILL BREAK!!!!!

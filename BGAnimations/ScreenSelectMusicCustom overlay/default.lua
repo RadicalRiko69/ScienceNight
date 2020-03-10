@@ -238,6 +238,15 @@ end;]]
 	return false;
 end;]]
 
+--No it doesn't account for co-op 4x but it's close enough
+local function oppositePlayer(pn)
+	if pn == "PlayerNumber_P1" then
+		return "PlayerNumber_P2"
+	else
+		return "PlayerNumber_P1"
+	end;
+end
+
 local function ChangeSteps(pn,dir)
 	local selection = stepsSelection[pn] + dir
 	if selection < #stepsArray+1 and selection > 0 then
@@ -251,6 +260,12 @@ local function ChangeSteps(pn,dir)
 			end;
 				
 		else
+			--So oddly enough there isn't a "GetStyleType()" function for steps so we have to do this bullshit to check routine/couples
+			if GAMESTATE:GetNumPlayersEnabled() > 1 and (stepsArray[selection]:GetStepsType() == 'StepsType_Pump_Routine' or stepsArray[selection]:GetStepsType() == 'StepsType_Pump_Couple') then
+				--Have to invalidate the opposite player because SM-RIO will get confused...
+				GAMESTATE:SetCurrentSteps(oppositePlayer(pn),nil);
+				stepsSelection[oppositePlayer(pn)] = selection;
+			end;
 			GAMESTATE:SetCurrentSteps(pn,stepsArray[selection]);
 			stepsSelection[pn] = selection;
 		end;
