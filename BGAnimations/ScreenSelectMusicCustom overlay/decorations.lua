@@ -7,9 +7,26 @@ string comparison so use SONGMAN:FindSong() instead
 of keeping strings in the array.
 Yes, songs are pointers.
 ]]
+
+--For boss songs, regular and Quest bosses.
 local redNames = {
-	SONGMAN:FindSong("ScienceNight/ESCAPE"),
-	SONGMAN:FindSong("19-DELTA NEX REBIRTH/Final Dance")
+	SONGMAN:FindSong("ScienceNight/ZBOSS - ESCAPE"),
+	SONGMAN:FindSong("ScienceNight/ZBOSS - POSSESSION"),
+	SONGMAN:FindSong("ScienceNight/ZBOSS - Anti-Matter"),
+	SONGMAN:FindSong("World 1/QBOSS - Up Up And Away")
+}
+
+--For free songs, all unlocked and original songs will be white.
+local freeSongs = {
+	SONGMAN:FindSong("ScienceNight/A - Could This Be Real"),
+	SONGMAN:FindSong("ScienceNight/A - Dance (The Way It Moves)"),
+	SONGMAN:FindSong("ScienceNight/A - Don't Let Me Down"),
+	SONGMAN:FindSong("ScienceNight/A - Hush"),
+	SONGMAN:FindSong("ScienceNight/A - I Took A Pill In Ibiza (SeeB Remix)"),
+	SONGMAN:FindSong("ScienceNight/A - Stressed Out"),
+	SONGMAN:FindSong("ScienceNight/K - One"),
+	SONGMAN:FindSong("ScienceNight/K - Rooftop"),
+	SONGMAN:FindSong("ScienceNight/K - Sugar Free")
 }
 
 local function has_value (tab, val)
@@ -37,6 +54,8 @@ t[#t+1] = Def.ActorFrame{
 					self:diffusealpha(1);
 					if has_value(redNames,song) then
 						self:diffusecolor(color("#b90000"));
+					elseif has_value(freeSongs,song) then
+						self:diffusecolor(color("#ffdc00"));
 					else
 						self:diffusecolor(Color("White"));
 					end;
@@ -58,6 +77,8 @@ t[#t+1] = Def.ActorFrame{
 					self:diffusealpha(1);
 					if has_value(redNames,song) then
 						self:diffusecolor(color("#b90000"));
+					elseif has_value(freeSongs,song) then
+						self:diffusecolor(color("#ffdc00"));
 					else
 						self:diffusecolor(Color("White"));
 					end;
