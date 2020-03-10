@@ -26,6 +26,8 @@ t[#t+1] = Def.ActorFrame{
 					self:diffusealpha(1);
 					if has_value(redNames,song) then
 						self:diffusecolor(color("#b90000"));
+					elseif has_value(freeSongs,song) then
+						self:diffusecolor(color("#ffdc00"));
 					else
 						self:diffusecolor(Color("White"));
 					end;
@@ -47,6 +49,8 @@ t[#t+1] = Def.ActorFrame{
 					self:diffusealpha(1);
 					if has_value(redNames,song) then
 						self:diffusecolor(color("#b90000"));
+					elseif has_value(freeSongs,song) then
+						self:diffusecolor(color("#ffdc00"));
 					else
 						self:diffusecolor(Color("White"));
 					end;
