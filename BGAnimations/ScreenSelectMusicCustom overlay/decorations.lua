@@ -13,6 +13,7 @@ local redNames = {
 	SONGMAN:FindSong("ScienceNight/ZBOSS - ESCAPE"),
 	SONGMAN:FindSong("ScienceNight/ZBOSS - POSSESSION"),
 	SONGMAN:FindSong("ScienceNight/ZBOSS - Anti-Matter"),
+	SONGMAN:FindSong("ScienceNight/ZBOSS - Skeptic"),
 	SONGMAN:FindSong("World 1/QBOSS - Up Up And Away")
 }
 
@@ -21,6 +22,7 @@ local freeSongs = {
 	SONGMAN:FindSong("ScienceNight/A - Could This Be Real"),
 	SONGMAN:FindSong("ScienceNight/A - Dance (The Way It Moves)"),
 	SONGMAN:FindSong("ScienceNight/A - Don't Let Me Down"),
+	SONGMAN:FindSong("ScienceNight/A - Human"),
 	SONGMAN:FindSong("ScienceNight/A - Hush"),
 	SONGMAN:FindSong("ScienceNight/A - I Took A Pill In Ibiza (SeeB Remix)"),
 	SONGMAN:FindSong("ScienceNight/A - Stressed Out"),
