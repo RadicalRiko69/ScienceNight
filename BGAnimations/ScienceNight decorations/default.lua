@@ -45,11 +45,16 @@ local function genPlayerFrame(player, xPos)
 	return Def.ActorFrame {
 		InitCommand=cmd(x,xPos;y,SCREEN_BOTTOM;diffusealpha,0);
 		OnCommand=cmd(decelerate,0.5;diffusealpha,1);
+		LoadActor("border")..{
+		    InitCommand=cmd(zoomx,0.54;zoomy,0.55;addx,-0.65);
+		    OnCommand=cmd(decelerate,0.5;addy,-52;diffusealpha,1);
+		    OffCommand=cmd(decelerate,0.5;addy,52;diffusealpha,0);
+		};
 		Def.Sprite{
 			Texture=getenv("profile_icon_"..pname(player));
 		    InitCommand=cmd(zoomto,40,40);
-		    OnCommand=cmd(decelerate,0.5;addy,-50;diffusealpha,1);
-		    OffCommand=cmd(decelerate,0.5;addy,50;diffusealpha,0);
+		    OnCommand=cmd(decelerate,0.5;addy,-52;diffusealpha,1);
+		    OffCommand=cmd(decelerate,0.5;addy,52;diffusealpha,0);
 		};
 		LoadActor("blackline")..{
 		    InitCommand=cmd(zoom,.5;);
