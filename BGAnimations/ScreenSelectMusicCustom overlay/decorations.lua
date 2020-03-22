@@ -18,18 +18,14 @@ local redNames = {
 }
 
 --For free songs, all unlocked and original songs will be white.
-local freeSongs = {
-	SONGMAN:FindSong("ScienceNight/A - Could This Be Real"),
-	SONGMAN:FindSong("ScienceNight/A - Dance (The Way It Moves)"),
-	SONGMAN:FindSong("ScienceNight/A - Don't Let Me Down"),
-	SONGMAN:FindSong("ScienceNight/A - Human"),
-	SONGMAN:FindSong("ScienceNight/A - Hush"),
-	SONGMAN:FindSong("ScienceNight/A - I Took A Pill In Ibiza (SeeB Remix)"),
-	SONGMAN:FindSong("ScienceNight/A - Stressed Out"),
-	SONGMAN:FindSong("ScienceNight/K - One"),
-	SONGMAN:FindSong("ScienceNight/K - Rooftop"),
-	SONGMAN:FindSong("ScienceNight/K - Sugar Free")
-}
+local freeSongs = {};
+for group,songs in pairs(SNUNLOCK.InitialUnlocks) do
+	for i,songName in ipairs(songs) do
+		freeSongs[#freeSongs+1] = SONGMAN:FindSong(group.."/"..songName);
+	end;
+end;
+--Want to add more white songs even though they're not in the initial unlocks? Do this
+-- #freeSongs[#freeSongs+1] = SONGMAN:FindSong("ScienceNight/asdasdadasdads")
 
 local function has_value (tab, val)
 	--DON'T CHANGE IT TO IPAIRS IT WILL BREAK!!!!!
