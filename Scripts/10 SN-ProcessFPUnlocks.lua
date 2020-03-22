@@ -37,10 +37,10 @@ SNUNLOCK = {
 SNUNLOCK.GetSaveDataPath=function(self,player)
 	local profileDir = PROFILEMAN:GetProfileDir(ProfileSlot[PlayerNumber:Reverse()[player]+1])
 	--We want to return nil if they're not using a profile.
-	--[[if profileDir == '' then
+	if profileDir == '' then
 		return nil
-	end]]
-	assert(profileDir ~= '',"No profile is loaded for "..player.." ("..ProfileSlot[PlayerNumber:Reverse()[player]+1].."). Cannot load/save mission data.")
+	end
+	--assert(profileDir ~= '',"No profile is loaded for "..player.." ("..ProfileSlot[PlayerNumber:Reverse()[player]+1].."). Cannot load/save mission data.")
 	return profileDir..self.savefile
 end;
 
