@@ -97,6 +97,18 @@ QUESTMODE.CheckAndUpdateMissionStatus=function(self,player)
 	return clearStatus;
 end;
 
+QUESTMODE.AllStepsCleared=function(self,player)
+	assert(self.currentWorld, "current world string not set!")
+	assert(self[player][self.currentWorld], pname(player).." table does not contain the world '"..self.currentWorld.."'. This is a fatal error, you will have to recreate your save file.")
+	assert(self[player][self.currentWorld][GAMESTATE:GetCurrentSong():GetTranslitFullTitle()],"The "..pname(player).." table doesn't have the current song! Current World: "..self.currentWorld);
+	for i,steps in ipairs(GAMESTATE:GetCurrentSong():GetAllSteps()) do
+		if not self[player][self.currentWorld][GAMESTATE:GetCurrentSong():GetTranslitFullTitle()][curIndex] then
+			return false;
+		end;
+	end;
+	return true;
+end;
+
 QUESTMODE.HasPassedMission=function(self,player)
 	assert(self[player],"LoadCurrentProgress hasn't been called yet!")
 	--Check this first

@@ -23,4 +23,5 @@ songGroups = {
 	"80-Full Tracks",
 	"81-Rave",
 	"99-Special",
+	"19-DELTA NEX REBIRTH"
 }

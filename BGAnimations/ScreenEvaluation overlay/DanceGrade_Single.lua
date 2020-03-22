@@ -106,14 +106,15 @@ t[#t+1] = Def.ActorFrame{
 
 --You can adjust it Gio
 if (getenv("PlayMode") == "Missions") then
+	local pn = GAMESTATE:GetMasterPlayerNumber();
+	QUESTMODE:CheckAndUpdateMissionStatus(pn)
 	
 	t[#t+1] = LoadFont("Common Normal")..{
 		--Text="Mission Cleared!";
 		InitCommand=function(self)
 			self:xy(SCREEN_CENTER_X,SCREEN_BOTTOM-110):diffusealpha(0):zoom(initzoom);
 			
-			QUESTMODE:CheckAndUpdateMissionStatus(GAMESTATE:GetMasterPlayerNumber())
-			if QUESTMODE:HasPassedMission(GAMESTATE:GetMasterPlayerNumber()) then
+			if QUESTMODE:HasPassedMission(pn) then
 				self:settext("Mission Cleared!");
 			else
 				self:settext("Mission Failed...");
@@ -122,6 +123,13 @@ if (getenv("PlayMode") == "Missions") then
 		OnCommand=cmd(sleep,fx+(inc*(#datalabelslist+1));accelerate,intw;diffusealpha,1;zoom,datazoom-0.15;);
 		OffCommand=cmd(decelerate,0.2;zoomx,0);
 	};
+	
+	if QUESTMODE:AllStepsCleared(pn) then
+		--Yes this would run every single time if you're replaying a mission and you already beat all the missions, but it doesn't unlock a song more than once so it's fine
+		if SN_unlockFromSSC(pn,GAMESTATE:GetCurrentSong()) then
+			--Insert a "new song unlocked!" here or some shit idk
+		end;
+	end;
 end;
 
 --P1 RANK CODE

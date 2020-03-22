@@ -432,7 +432,7 @@ local function inputs(event)
 				setenv("cur_group",GROUPWHEEL_GROUPS[groupSelection]);
 				if isMissionMode then QUESTMODE.currentWorld = GROUPWHEEL_GROUPS[groupSelection] end;
 				--SCREENMAN:SystemMessage(GROUPWHEEL_GROUPS[groupSelection]);
-				currentGroup = SONGMAN:GetSongsInGroup(GROUPWHEEL_GROUPS[groupSelection],true)
+				currentGroup = SNUNLOCK:GetSongsInGroup(GROUPWHEEL_GROUPS[groupSelection])
 				assert(#currentGroup > 0,"Hey idiot, you don't have any songs in this group.")
 				songScroller:move_focus_by(-songScroller:get_focus_offset())
 				--songScroller:scroll_to_pos(1);
@@ -564,7 +564,7 @@ local g = Def.ActorFrame{
 			if not prefSong then 
 				prefSong = SONGMAN:GetRandomSong()
 			end;
-			currentGroup = SONGMAN:GetSongsInGroup(prefSong:GetGroupName(),true)
+			currentGroup = SNUNLOCK:GetSongsInGroup(prefSong:GetGroupName(),true)
 			setenv("cur_group",prefSong:GetGroupName());
 			songScroller:set_info_set(currentGroup,1)
 			for key,value in ipairs(currentGroup) do

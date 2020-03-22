@@ -5,6 +5,18 @@ Branch.OptionsEdit = function()
 	return "ScreenEditMenu"
 end
 
+Branch.AfterSelectProfile = function()
+	-- load the unlock data here.
+	SNUNLOCK:LoadUnlockStatus()
+	
+	if ( THEME:GetMetric("Common","AutoSetStyle") == true ) then
+		-- use SelectStyle in online...
+		return IsNetConnected() and "ScreenSelectStyle" or "ScreenSelectPlayMode"
+	else
+		return "ScreenSelectStyle"
+	end
+end
+
 function SelectMusicOrCourse()
 	if IsNetSMOnline() then
 		return "ScreenNetSelectMusic"
