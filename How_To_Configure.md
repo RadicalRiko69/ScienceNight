@@ -10,8 +10,10 @@ So if you have a folder of songs which contain missions named GROUP 1, you would
 
 ## Step 2. Add the song to unlock after beating all missions in a song
 
-Add a #SONGUNLOCK tag somewhere in your ssc with the name of the song to unlock for free play.
+Add a #SONGUNLOCK tag somewhere in your ssc before the steps area with the name of the song to unlock for free play.
 Yes, mission songs are separate from free play songs, it's not like SM supports hiding charts.
+
+For example: `#SONGUNLOCK:19-DELTA NEX REBIRTH/666` to unlock the song '666' from the song group named '19-DELTA NEX REBIRTH'.
 
 ## Step 3. Configure default unlocks for free play
 
