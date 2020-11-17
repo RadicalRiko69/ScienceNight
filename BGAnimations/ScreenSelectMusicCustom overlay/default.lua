@@ -49,12 +49,12 @@ local item_mt_course= {
 			
 			Def.Quad{
 				Name="Glow";
-				InitCommand=cmd(setsize,155,155;diffuseshift;effectcolor1,color("#88CCFF00");effectcolor2,color("#FFFFFF"));
+				InitCommand=cmd(setsize,245,140;diffuseshift;effectcolor1,color("#88CCFF00");effectcolor2,color("#FFFFFF"));
 				
 			};
 			Def.Sprite{
 				Name="banner";
-				InitCommand=cmd(scaletoclipped,150,150;);
+				InitCommand=cmd(scaletoclipped,240,135;);
 				--InitCommand=cmd(scaletofit,0,0,1,1;);
 			};
 			--Debugging only
@@ -73,7 +73,7 @@ local item_mt_course= {
 		--local offsetFromCenter = 0;
 		local offsetFromCenter = item_index-math.floor(numWheelItems/2)
 		local offsetFromFocus = item_index-focus_pos
-		local spacing = 80;
+		local spacing = 73;
 		local edgeSpacing = 135;
 		--self.container:stoptweening();
 		if math.abs(offsetFromCenter) < 5 then

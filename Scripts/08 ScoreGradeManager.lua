@@ -16,10 +16,9 @@ GRADE_TABLE = {
 }
 
 function getGradeFromStats(player)
-	
-	local p1accuracy = round(STATSMAN:GetCurStageStats():GetPlayerStageStats(player):GetPercentDancePoints()*100)
-	--local p1accuracy = getenv(pname(player).."_accuracy") or 0;
-	local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player);
+    --local p1accuracy = getenv(pname(player).."_accuracy") or 0;
+    local stats = STATSMAN:GetCurStageStats():GetPlayerStageStats(player);
+    local p1accuracy = stats:GetPercentDancePoints()*100;
 	-- old convention is commented
 	if getenv("StageFailed") == true then
 		return "F"; -- _failed
@@ -31,7 +30,7 @@ function getGradeFromStats(player)
 		else 
 			return "S2"; -- S_plus
 		end;
-	elseif p1accuracy >= 96 and p1misses == 0 and p1w4 == 0 then
+	elseif p1accuracy >= 95 and stats:GetTapNoteScores("TapNoteScore_Miss") == 0 and stats:GetTapNoteScores("TapNoteScore_W4") == 0 then
 		return "S1"; -- S_normal
 	elseif p1accuracy >= 80 then
 		return "A";
@@ -48,6 +47,38 @@ function getGradeFromStats(player)
 	end;
 end;
 
+--WTF uses the above one? 
+function getGradeFromScore(topscore)
+	local dancepoints = topscore:GetPercentDP()*100
+	local misses = topscore:GetTapNoteScore("TapNoteScore_Miss")+topscore:GetTapNoteScore("TapNoteScore_CheckpointMiss")
+
+	if dancepoints == 100 and misses == 0 then
+		return "S_S";
+	elseif dancepoints >= 99 and misses == 0 then
+		return "S_plus";
+	elseif dancepoints >= 80 and misses == 0 then
+		return "S_normal";
+	elseif dancepoints >= 80 then
+		return "A";
+	elseif dancepoints >= 70 then
+		return "B"
+	elseif dancepoints >= 60 then
+		return "C"
+	elseif dancepoints >= 50 then
+		return "D"
+	else
+		return "F"
+	end;
+end;
+
 function getGradeAsInt(stats)
 	return GRADE_TABLE[getGradeFromStats(stats)]
+end;
+
+function setScores(PlayerScores)
+	setenv("PlayerScores",PlayerScores);
+end;
+
+function getScores()
+	return getenv("PlayerScores");
 end;

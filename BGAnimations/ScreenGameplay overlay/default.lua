@@ -43,9 +43,9 @@ elseif style == "TwoPlayersTwoSides" or style == "OnePlayerOneSide" then
 		local width = SCREEN_WIDTH/2-275
 		local xPos = THEME:GetMetric("ScreenGameplay","Player"..pname(pn).."OnePlayerOneSideX")
 		if pn == PLAYER_1 then
-			xPos = xPos+15;
+			xPos = xPos;
 		else
-			xPos = xPos-15;
+			xPos = xPos;
 		end;
 		
 		--The good lifebar
@@ -66,27 +66,40 @@ elseif style == "TwoPlayersTwoSides" or style == "OnePlayerOneSide" then
 			end;
 		};
 		t[#t+1] = Def.Sprite{
-			Texture=getenv("profile_icon_"..pname(pn));
-		    InitCommand=cmd(zoomto,40,40;y,30+10;vertalign,bottom;);
+			Texture="border";
+			InitCommand=cmd(zoomx,0.54;zoomy,0.55;addy,30);
 		    OnCommand=function(self)
 		    	if pn == PLAYER_1 then
 		    		self:horizalign(right);
-		    		self:x(xPos-width/2-30);
+		    		self:x(xPos-width/2-25);
 	    		else
-	    			self:x(xPos+width/2+30);
+					self:x(xPos+width/2+24);
 	    			self:horizalign(left);
 	    		end;
 		    end;
 		};
-		t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse") .. {
-			InitCommand=cmd(maxwidth,300;y,8;zoom,0.45;shadowlength,1;uppercase,true);
+		t[#t+1] = Def.Sprite{
+			Texture=getenv("profile_icon_"..pname(pn));
+		    InitCommand=cmd(zoomto,39,38;y,30+19;vertalign,bottom;);
+		    OnCommand=function(self)
+		    	if pn == PLAYER_1 then
+		    		self:horizalign(right);
+		    		self:x(xPos-width/2-32);
+	    		else
+	    			self:x(xPos+width/2+32);
+	    			self:horizalign(left);
+	    		end;
+		    end;
+		};
+		t[#t+1] = LoadFont("_charter bt 40px") .. {
+			InitCommand=cmd(maxwidth,580;y,8;zoom,0.45;shadowlength,1);
 			OnCommand=function(self)
 				if pn == PLAYER_1 then
-					self:horizalign(left);
-					self:x(xPos-width/2-25);
+					self:horizalign(center);
+					self:x(xPos-width/2+102);
 				else
-					self:horizalign(right);
-					self:x(xPos+width/2+25);
+					self:horizalign(center);
+					self:x(xPos+width/2-102);
 				end;
 			end;
 		
@@ -107,61 +120,50 @@ elseif style == "TwoPlayersTwoSides" or style == "OnePlayerOneSide" then
 		};
 	end;
 else
-	--DANGER double
-	t[#t+1] = LoadActor("danger") .. {
-		--Condition=style == "StyleType_OnePlayerTwoSides";
-		InitCommand=cmd(visible,false;horizalign,center;x,SCREEN_CENTER_X;vertalign,top;y,SCREEN_TOP+16;zoomtowidth,SCREEN_WIDTH-36;zoomy,0.5); 
-		OnCommand=cmd(effectclock,"bgm";diffuseshift;effectcolor1,color("#FFFFFFFF");effectcolor2,color("#FFFFFF66"));
-			
-		HealthStateChangedMessageCommand=function(self,params)
-				if params.HealthState == 'HealthState_Dead' then
-				self:visible(false);
-			end;
-		end;
-		
-		LifeChangedMessageCommand=function(self,params)
-			local life = params.LifeMeter:GetLife();
-			local style = GAMESTATE:GetCurrentStyle();
-			if true then
-				if life <= THEME:GetMetric("LifeMeterBar", "DangerThreshold") then
-					self:visible(true);
-					else
-					self:visible(false);
-					end;
-			end;
-		end;
-	};
 
 	local pn = GAMESTATE:GetMasterPlayerNumber()
 	local width = SCREEN_WIDTH/2+50
 	local xPos = SCREEN_CENTER_X+25
 	-- Doubles... And legacy code.
 	t[#t+1] = LoadActor("centered_lifebar", pn,width)..{
-		InitCommand=cmd(xy,xPos,30);
+		InitCommand=cmd(xy,xPos-25,30);
 
 	}
 	t[#t+1] = Def.Sprite{
+		Texture="border";
+		InitCommand=cmd(zoomx,0.54;zoomy,0.55;addy,30);
+		OnCommand=function(self)
+			if pn == PLAYER_1 then
+				self:horizalign(right);
+				self:x(xPos-width/2-50);
+			else
+				self:x(xPos+width/2-1);
+				self:horizalign(left);
+			end;
+		end;
+	};
+	t[#t+1] = Def.Sprite{
 		Texture=getenv("profile_icon_"..pname(pn));
-	    InitCommand=cmd(zoomto,40,40;y,30+10;vertalign,bottom;);
+	    InitCommand=cmd(zoomto,39,38;y,30+19;vertalign,bottom;);
 	    OnCommand=function(self)
 	    	if pn == PLAYER_1 then
 	    		self:horizalign(right);
-	    		self:x(xPos-width/2-30);
+	    		self:x(xPos-width/2-57);
     		else
-    			self:x(xPos+width/2+30);
+    			self:x(xPos+width/2+7);
     			self:horizalign(left);
     		end;
 	    end;
 	};
-	t[#t+1] = LoadFont("venacti/_venacti_outline 26px bold diffuse") .. {
-		InitCommand=cmd(maxwidth,300;y,8;zoom,0.45;shadowlength,1;uppercase,true);
+	t[#t+1] = LoadFont("_charter bt 40px") .. {
+		InitCommand=cmd(maxwidth,1200;y,8;zoom,0.45;shadowlength,1);
 		OnCommand=function(self)
 			if pn == PLAYER_1 then
-				self:horizalign(left);
-				self:x(xPos-width/2-25);
+				self:horizalign(center);
+				self:x(SCREEN_CENTER_X);
 			else
-				self:horizalign(right);
-				self:x(xPos+width/2+25);
+				self:horizalign(center);
+				self:x(SCREEN_CENTER_X);
 			end;
 		end;
 	

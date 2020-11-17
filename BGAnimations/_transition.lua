@@ -11,7 +11,7 @@ for i=1, 6 do
 		OnCommand=cmd(diffusealpha,0;sleep,sleep_time;linear,0.10;diffusealpha,1)
 	}
 	t[#t+1] = LoadActor(THEME:GetPathG("", "logo")) .. {
-		InitCommand=cmd(zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;Center),
+		InitCommand=cmd(zoom,0.3;Center),
 		OnCommand=cmd(diffusealpha,0;sleep,sleep_time;linear,0.10;diffusealpha,1)
 	}
 	t[#t+1] = LoadFont("extras/_zona pro thin 40px") .. {

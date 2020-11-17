@@ -30,7 +30,7 @@ t[#t+1] = Def.ActorFrame {
 
 t[#t+1] = Def.ActorFrame {
 	LoadActor("moon") .. {
-		InitCommand=cmd(zoom,0.125;x,SCREEN_CENTER_X+250;y,SCREEN_CENTER_Y-200;diffusealpha,0.5);
+		InitCommand=cmd(zoom,0.25;x,SCREEN_CENTER_X+250;y,SCREEN_CENTER_Y-200;diffusealpha,0.5);
 	};
 };
 

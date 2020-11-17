@@ -6,10 +6,12 @@ function scale_to_fit(actor, width, height)
 end
 
 function getJacketOrBanner(song)
-	if song:HasJacket() then
-		return song:GetJacketPath();
+	if song:HasBackground() then
+		return song:GetBackgroundPath();
 	elseif song:HasBanner() then
 		return song:GetBannerPath();
+	elseif song:HasJacket() then
+		return song:GetJacketPath();
 	else
 		return THEME:GetPathG("Common","fallback banner");
 	end;

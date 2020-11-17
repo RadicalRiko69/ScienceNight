@@ -8,12 +8,10 @@ end
 Branch.AfterSelectProfile = function()
 	-- load the unlock data here.
 	SNUNLOCK:LoadUnlockStatus()
+	GAMESTATE:ApplyGameCommand("playmode,regular")
 	
 	if ( THEME:GetMetric("Common","AutoSetStyle") == true ) then
-		-- use SelectStyle in online...
-		return IsNetConnected() and "ScreenSelectStyle" or "ScreenSelectPlayMode"
-	else
-		return "ScreenSelectStyle"
+		return "ScreenSelectMusicCustom"
 	end
 end
 

@@ -15,7 +15,7 @@ t[#t+1] = Def.ActorFrame {
 		Name="logo",
 		Texture="logo.png",
 		InitCommand=function(self)
-			self:zoomto(SCREEN_WIDTH,SCREEN_HEIGHT):Center()
+			self:zoom(0.3):Center()
 		end;
 	};
 };

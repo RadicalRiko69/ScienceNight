@@ -1,11 +1,11 @@
 
 --If true, will show all song groups instead of the below array.
-showAllGroups = false
+showAllGroups = true
 
 --Song groups to show in the song select. Duh.
 songGroups = {
-	"Composite",
 	"ScienceNight",
+	"Composite",
 	"Infinity",
 	"Custom Music",
 	"Prime 2",
@@ -22,6 +22,5 @@ songGroups = {
 	"10-Classic",
 	"80-Full Tracks",
 	"81-Rave",
-	"99-Special",
-	"19-DELTA NEX REBIRTH"
+	"99-Special"
 }

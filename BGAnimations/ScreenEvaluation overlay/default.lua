@@ -23,6 +23,37 @@ local t = Def.ActorFrame {
 	self:zoom(0.57)
 end;]]
 
+local statsP1 = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1);
+local statsP2 = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2);
+
+local gradeP1 = statsP1:GetGrade();
+local gradeP2 = statsP2:GetGrade();
+
+local function failed(g)
+	if g == "Grade_Failed" then
+		return true;
+	else
+		return false;
+	end
+end
+
+-- if (only P1) and (P1 failed)
+if (GAMESTATE:IsHumanPlayer(PLAYER_1) and failed(gradeP1) and not GAMESTATE:IsHumanPlayer(PLAYER_2)) then
+	t[#t+1] = LoadActor("failure (loop)")..{OnCommand=cmd(sleep,3.5;queuecommand,"PlaySound");PlaySoundCommand=cmd(play);OffCommand=cmd(stop);};	--Music
+	
+-- if (only P2) and (P2 failed)	
+elseif (GAMESTATE:IsHumanPlayer(PLAYER_2) and failed(gradeP2) and not GAMESTATE:IsHumanPlayer(PLAYER_1)) then
+	t[#t+1] = LoadActor("failure (loop)")..{OnCommand=cmd(sleep,3.5;queuecommand,"PlaySound");PlaySoundCommand=cmd(play);OffCommand=cmd(stop);};	--Music
+
+-- if (both P1 and P2) and (both P1 and P2 failed)	
+elseif (GAMESTATE:IsHumanPlayer(PLAYER_1) and GAMESTATE:IsHumanPlayer(PLAYER_2) and failed(gradeP1) and failed(gradeP2) ) then
+	t[#t+1] = LoadActor("failure (loop)")..{OnCommand=cmd(sleep,3.5;queuecommand,"PlaySound");PlaySoundCommand=cmd(play);OffCommand=cmd(stop);};	--Music
+
+--if nobody failed?
+else
+	t[#t+1] = LoadActor("results (loop)")..{OnCommand=cmd(sleep,3.5;queuecommand,"PlaySound");PlaySoundCommand=cmd(play);OffCommand=cmd(stop);};	--Music
+end
+
 t[#t+1] = LoadActor("AR Results")..{OnCommand=cmd(play)};	--Music
 
 
@@ -38,11 +69,6 @@ end;
 	t[#t+1] = LoadActor("DanceGrade",pn);
 end;]]
 
-t[#t+1] = LoadActor("music (loop)")..{						
-		InitCommand=cmd(sleep,3.5;queuecommand,"PlaySound");
-		PlaySoundCommand=cmd(play);
-		OffCommand=cmd(stop);
-	};
 --songinfo
 local cursong =		GAMESTATE:GetCurrentSong()
 local artist =		GAMESTATE:GetCurrentSong():GetDisplayArtist()
@@ -58,7 +84,7 @@ t[#t+1] = Def.ActorFrame {
 
 	LoadFont("_alternategotno2 40px")..{	--SONG + (SUBTITLE)
 		Text=cursong:GetDisplayFullTitle();
-		InitCommand=cmd(zoom,.6;diffuse,0,0,0,1;horizalign,center;maxwidth,1250;y,24);
+		InitCommand=cmd(zoom,.6;diffuse,0,0,0,1;horizalign,center;maxwidth,1250;y,19);
 		OffCommand=cmd(decelerate,0.5;diffusealpha,0);
 		OnCommand=function(self)
 			(cmd(diffusealpha,0;sleep,1.5;linear,0.75;diffusealpha,1;))(self)

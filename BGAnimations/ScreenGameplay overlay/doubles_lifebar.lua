@@ -11,33 +11,6 @@ local LIFEBAR_WIDTH = SCREEN_WIDTH-130
 local LIFEBAR_REALWIDTH = LIFEBAR_WIDTH+60
 
 return Def.ActorFrame{
-	--Wavy line
-	LoadActor("hot_lores") .. {
-		OnCommand=cmd(diffusealpha,0;zoomtowidth,LIFEBAR_REALWIDTH;customtexturerect,0,0,600/(LIFEBAR_REALWIDTH),1;;queuecommand,"Begin");
-		BeginCommand=function(self)
-			if style == "Double" then
-				local move = GAMESTATE:GetSongBPS()/2
-				if GAMESTATE:GetSongFreeze() then 
-					move = 0; 
-				end
-				self:texcoordvelocity(move,0);
-				self:sleep(0.05);
-				self:queuecommand("Begin");
-			else
-				self:visible(false);
-			end;
-		end;
-
-		
-		LifeChangedMessageCommand=function(self,params)
-				local life=params.LifeMeter:GetLife();
-				if life>=THEME:GetMetric("LifeMeterBar", "HotValue") then
-						self:diffusealpha(0.5);
-					else
-						self:diffusealpha(0);
-					end;
-		end;	
-	};
 
 	---basemeter masked P1
 	LoadActor("basemeter") .. {	
@@ -123,13 +96,5 @@ return Def.ActorFrame{
 	LoadActor("begin") .. {
 		InitCommand=cmd(x,LIFEBAR_WIDTH/2;horizalign,right;zoom,0.75;rotationy,180);
 	};
-	
-	--SCORE
-	LoadFont("venacti/_venacti_outline 26px bold monospace numbers") .. {
-		InitCommand=cmd(zoom,0.45;uppercase,true;shadowlength,1;);
-		ComboChangedMessageCommand=function(self)
-			local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player);
-			self:settext(PSS:GetScore());
-		end;
-	};
+
 };

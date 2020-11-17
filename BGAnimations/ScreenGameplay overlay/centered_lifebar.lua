@@ -9,55 +9,6 @@ local LIFEBAR_REALWIDTH = LIFEBAR_WIDTH+50
 
 
 return Def.ActorFrame{
-	--[[
-	Everything should be based around the center
-	because it's the best indicator of the lifebar
-	width (it's easy to debug)
-	]]
-	
-	--DANGER
-	LoadActor("danger") .. {
-		InitCommand=cmd(y,6;zoomtowidth,LIFEBAR_REALWIDTH;zoomy,0.5); 
-		OnCommand=cmd(effectclock,"bgm";diffuseshift;effectcolor1,color("#FFFFFFFF");effectcolor2,color("#FFFFFF66"));
-		LifeChangedMessageCommand=function(self,params)		
-			if params.Player == player then
-				local lifeP1 = params.LifeMeter:GetLife();
-				if lifeP1 <= THEME:GetMetric("LifeMeterBar", "DangerThreshold") then
-					self:diffusealpha(1);
-						
-				else
-					self:diffusealpha(0);
-				end;	
-			end;
-		end;
-	};
-	
-	--Wavy line
-	LoadActor("hot_lores") .. {
-		OnCommand=cmd(zoomtowidth,LIFEBAR_REALWIDTH;texcoordvelocity,0.1,0;queuecommand,"Begin");
-		BeginCommand=function(self)
-			local move = GAMESTATE:GetSongBPS()/2
-			if GAMESTATE:GetSongFreeze() then 
-				move = 0; 
-			end
-			self:texcoordvelocity(move,0);
-			self:sleep(0.03);
-			self:queuecommand("Begin");
-		end;
-		
-		
-		
-		LifeChangedMessageCommand=function(self,params)
-			if params.Player == player then
-				local lifeP1=params.LifeMeter:GetLife();
-				if lifeP1>=THEME:GetMetric("LifeMeterBar", "HotValue") then
-						self:diffusealpha(0.5);
-					else
-						self:diffusealpha(0);
-					end;
-				end;
-		end;
-	};
 	
 	---basemeter masked P1
 	LoadActor("basemeter") .. {

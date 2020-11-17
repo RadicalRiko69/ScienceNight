@@ -22,54 +22,6 @@ return Def.ActorFrame{
 		end;
 	end;
 	
-	--DANGER
-	LoadActor("danger") .. {
-		InitCommand=cmd(xy,-5,6;zoomtowidth,LIFEBAR_REALWIDTH;zoomy,0.5); 
-		OnCommand=cmd(effectclock,"bgm";diffuseshift;effectcolor1,color("#FFFFFFFF");effectcolor2,color("#FFFFFF66"));
-		LifeChangedMessageCommand=function(self,params)		
-			if params.Player == player then
-			local lifeP1 = params.LifeMeter:GetLife();
-				if lifeP1 <= THEME:GetMetric("LifeMeterBar", "DangerThreshold") then
-					self:diffusealpha(1);
-						
-				else
-					self:diffusealpha(0);
-				end;	
-			end;
-		end;
-	};
-	
-	--Wavy line
-	LoadActor("hot_lores") .. {
-		OnCommand=cmd(x,-3;zoomtowidth,LIFEBAR_REALWIDTH;texcoordvelocity,0.1,0;queuecommand,"Begin");
-		BeginCommand=function(self)
-			if style == "Double" then
-				self:visible(false);
-			else
-				local move = GAMESTATE:GetSongBPS()/2
-				if GAMESTATE:GetSongFreeze() then 
-					move = 0; 
-				end
-					self:texcoordvelocity(move,0);
-					self:sleep(0.03);
-					self:queuecommand("Begin");
-			end;
-		end;
-		
-		
-		
-		LifeChangedMessageCommand=function(self,params)
-			if params.Player == player then
-				local lifeP1=params.LifeMeter:GetLife();
-				if lifeP1>=THEME:GetMetric("LifeMeterBar", "HotValue") then
-						self:diffusealpha(0.5);
-					else
-						self:diffusealpha(0);
-					end;
-				end;
-		end;
-	};
-	
 	---basemeter masked P1
 	LoadActor("basemeter") .. {	
 		InitCommand=cmd(valign,0.5;xy,-LIFEBAR_WIDTH/2-35,6;horizalign,left;zoomy,0.5;blend,Blend.Add); 
@@ -128,25 +80,6 @@ return Def.ActorFrame{
 		InitCommand=cmd(x,-LIFEBAR_WIDTH/2;horizalign,right;zoom,0.75;);
 	};
 	
-	--SCORE
-	LoadFont("venacti/_venacti_outline 26px bold monospace numbers") .. {
-		InitCommand=cmd(zoomy,0.45;uppercase,true;shadowlength,1;x,LIFEBAR_WIDTH/2+20;);
-		
-		--Flip the score back around and change alignment if player 2
-		OnCommand=function(self)
-			if player == PLAYER_2 then
-				self:horizalign(left);
-				self:zoomx(-.45);
-			else
-				self:horizalign(right);
-				self:zoomx(.45);
-			end;
-		end;
-		ComboChangedMessageCommand=function(self)
-			local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(player);
-			self:settext(PSS:GetScore());
-		end;
-	};
 	
 	LoadActor("tip") .. {	
 		InitCommand=cmd(valign,0.5;y,6;zoom,0.5;blend,Blend.Add;);

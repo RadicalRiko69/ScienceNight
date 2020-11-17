@@ -10,10 +10,10 @@ Yes, songs are pointers.
 
 --For boss songs, regular and Quest bosses.
 local redNames = {
-	SONGMAN:FindSong("ScienceNight/ZBOSS - ESCAPE"),
-	SONGMAN:FindSong("ScienceNight/ZBOSS - POSSESSION"),
-	SONGMAN:FindSong("ScienceNight/ZBOSS - Anti-Matter"),
-	SONGMAN:FindSong("ScienceNight/ZBOSS - Skeptic"),
+	SONGMAN:FindSong("Project ScienceNight/ZBOSS - ESCAPE"),
+	SONGMAN:FindSong("Project ScienceNight/ZBOSS - POSSESSION"),
+	SONGMAN:FindSong("Project ScienceNight/ZBOSS - Anti-Matter"),
+	SONGMAN:FindSong("Project ScienceNight/ZBOSS - Skeptic"),
 	SONGMAN:FindSong("World 1/QBOSS - Up Up And Away")
 }
 
@@ -38,11 +38,119 @@ local function has_value (tab, val)
 end
 
 
+local helpText = {
+	"Select any song you desire!",
+	"Use &LEFT; and &RIGHT; to select a song.",
+	"Use &UP; and &DOWN; to change group.",
+	"Press &START; to pick a song.",
+	"Press &LEFT; and &RIGHT; three times to access the command window."
+}
+local curHelpText = 1;
+
+local helpDifficultyText = {
+	"Use &LEFT; and &RIGHT; to select a difficulty.",
+	"Press &UP; or &DOWN; to cancel.",
+	"Press &START; to confirm your choice.",
+}
+local curhelpDifficultyText = 1;
+
+t[#t+1] = Def.ActorFrame{
+
+
+
+	LoadActor("arrows")..{
+		InitCommand=cmd(zoom,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
+		OnCommand=cmd(sleep,0.25;decelerate,0.5;zoom,1);
+		OffCommand=cmd(decelerate,0.5;zoom,0);
+	};
+
+	Def.Sprite{
+		Texture="pill",
+		InitCommand=cmd(zoom,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160);
+		OnCommand=cmd(sleep,0.45;decelerate,0.5;zoom,1);
+		OffCommand=cmd(decelerate,0.5;zoom,0);
+	};
+
+	--help text
+	LoadFont("_alternategotno2 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160;zoom,.6;diffusealpha,0;valign,.65;maxwidth,1050);
+		OnCommand=cmd(sleep,1.2;linear,1;diffusealpha,1;queuecommand,"Set");
+		OffCommand=cmd(visible,false);
+		Text="Select any song you desire!";
+		
+		SetCommand=function(self)
+            if curHelpText+1 > #helpText then
+               	curHelpText = 1
+            else
+                curHelpText = curHelpText+1;
+            end;
+            self:settext(helpText[curHelpText]);
+            self:linear(0.2);
+            self:diffusealpha(1);
+            self:sleep(2);
+            self:linear(0.2);
+            self:diffusealpha(0);
+            self:queuecommand("Set");
+		end;
+		
+		Set2Command=function(self)
+            if curhelpDifficultyText+1 > #helpDifficultyText then
+               	curhelpDifficultyText = 1
+            else
+                curhelpDifficultyText = curhelpDifficultyText+1;
+            end;
+            self:settext(helpDifficultyText[curhelpDifficultyText]);
+            self:linear(0.2);
+            self:diffusealpha(1);
+            self:sleep(2);
+            self:linear(0.2);
+            self:diffusealpha(0);
+            self:queuecommand("Set2");
+		end;
+		
+		SongChosenMessageCommand=function(self)
+			self:stoptweening();
+			self:settext(helpDifficultyText[curhelpDifficultyText]):queuecommand("Set2");
+			--(cmd(linear,0.25;zoom,1)) (self)
+		end;
+		SongUnchosenMessageCommand=function(self)
+			self:settext(helpText[curHelpText]):queuecommand("Set");
+		end;
+	};
+
+	--[[help text
+	LoadFont("_alternategotno2 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160;zoom,.6;diffusealpha,0;valign,.65;maxwidth,1050);
+		OnCommand=cmd(sleep,1.2;linear,1;diffusealpha,0);
+		OffCommand=cmd(visible,false);
+		Text="Select difficulty!";
+		
+		SetCommand=function(self)
+            if curhelpDifficultyText+1 > #helpDifficultyText then
+               	curhelpDifficultyText = 1
+            else
+                curhelpDifficultyText = curhelpDifficultyText+1;
+            end;
+            self:settext(helpDifficultyText[curhelpDifficultyText]);
+            self:linear(0.2);
+            self:diffusealpha(1);
+            self:sleep(2);
+            self:linear(0.2);
+            self:diffusealpha(0);
+            self:queuecommand("Set");
+        end;
+		SongChosenMessageCommand=cmd(playcommand,"Set");
+		SongUnchosenMessageCommand=function(self)
+			self:diffusealpha(0);
+		end;
+	};--]]
+};
+
 t[#t+1] = Def.ActorFrame{
 
 	-- CURRENT SONG NAME
 		LoadFont("_charter bt 40px")..{
-			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP-50;zoom,.75;maxwidth,700;diffusealpha,0);
+			InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_TOP-50;zoom,.75;maxwidth,1100;diffusealpha,0);
 			OnCommand=cmd(sleep,0.25;decelerate,0.5;addy,75);
 			OffCommand=cmd(decelerate,0.15;zoom,0);
 			CurrentSongChangedMessageCommand=function(self)
@@ -65,7 +173,7 @@ t[#t+1] = Def.ActorFrame{
 		};
 		-- CURRENT SONG ARTIST
 		LoadFont("_charter bt 40px")..{	
-			InitCommand=cmd(zoom,.5;maxwidth,900;diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_TOP-100);
+			InitCommand=cmd(zoom,.5;maxwidth,2000;diffusealpha,0;x,SCREEN_CENTER_X;y,SCREEN_TOP-100);
 			OnCommand=cmd(sleep,0.25;decelerate,0.5;addy,150);
 			OffCommand=cmd(decelerate,0.15;zoom,0);
 			CurrentSongChangedMessageCommand=function(self)
@@ -186,115 +294,6 @@ t[#t+1] = Def.ActorFrame{
 		end;
 	};
 }
-
-local helpText = {
-	"Select any song you desire!",
-	"Use &LEFT; and &RIGHT; to select a song.",
-	"Use &UP; and &DOWN; to change group.",
-	"Press &START; to pick a song.",
-	"Press &LEFT; and &RIGHT; three times to access the command window."
-}
-local curHelpText = 1;
-
-local helpDifficultyText = {
-	"Use &LEFT; and &RIGHT; to select a difficulty.",
-	"Press &UP; or &DOWN; to cancel.",
-	"Press &START; to confirm your choice.",
-}
-local curhelpDifficultyText = 1;
-
-t[#t+1] = Def.ActorFrame{
-
-
-
-	LoadActor("arrows")..{
-		InitCommand=cmd(zoom,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
-		OnCommand=cmd(sleep,0.25;decelerate,0.5;zoom,1);
-		OffCommand=cmd(decelerate,0.5;zoom,0);
-	};
-
-	Def.Sprite{
-		Texture="pill",
-		InitCommand=cmd(zoom,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160);
-		OnCommand=cmd(sleep,0.45;decelerate,0.5;zoom,1);
-		OffCommand=cmd(decelerate,0.5;zoom,0);
-	};
-
-	--help text
-	LoadFont("_alternategotno2 40px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160;zoom,.6;diffusealpha,0;valign,.65;maxwidth,1050);
-		OnCommand=cmd(sleep,1.2;linear,1;diffusealpha,1;queuecommand,"Set");
-		OffCommand=cmd(visible,false);
-		Text="Select any song you desire!";
-		
-		SetCommand=function(self)
-            if curHelpText+1 > #helpText then
-               	curHelpText = 1
-            else
-                curHelpText = curHelpText+1;
-            end;
-            self:settext(helpText[curHelpText]);
-            self:linear(0.2);
-            self:diffusealpha(1);
-            self:sleep(2);
-            self:linear(0.2);
-            self:diffusealpha(0);
-            self:queuecommand("Set");
-		end;
-		
-		Set2Command=function(self)
-            if curhelpDifficultyText+1 > #helpDifficultyText then
-               	curhelpDifficultyText = 1
-            else
-                curhelpDifficultyText = curhelpDifficultyText+1;
-            end;
-            self:settext(helpDifficultyText[curhelpDifficultyText]);
-            self:linear(0.2);
-            self:diffusealpha(1);
-            self:sleep(2);
-            self:linear(0.2);
-            self:diffusealpha(0);
-            self:queuecommand("Set2");
-		end;
-		
-		SongChosenMessageCommand=function(self)
-			self:stoptweening();
-			self:settext(helpDifficultyText[curhelpDifficultyText]):queuecommand("Set2");
-			--(cmd(linear,0.25;zoom,1)) (self)
-		end;
-		SongUnchosenMessageCommand=function(self)
-			self:settext(helpText[curHelpText]):queuecommand("Set");
-		end;
-	};
-
-	--[[help text
-	LoadFont("_alternategotno2 40px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+160;zoom,.6;diffusealpha,0;valign,.65;maxwidth,1050);
-		OnCommand=cmd(sleep,1.2;linear,1;diffusealpha,0);
-		OffCommand=cmd(visible,false);
-		Text="Select difficulty!";
-		
-		SetCommand=function(self)
-            if curhelpDifficultyText+1 > #helpDifficultyText then
-               	curhelpDifficultyText = 1
-            else
-                curhelpDifficultyText = curhelpDifficultyText+1;
-            end;
-            self:settext(helpDifficultyText[curhelpDifficultyText]);
-            self:linear(0.2);
-            self:diffusealpha(1);
-            self:sleep(2);
-            self:linear(0.2);
-            self:diffusealpha(0);
-            self:queuecommand("Set");
-        end;
-		SongChosenMessageCommand=cmd(playcommand,"Set");
-		SongUnchosenMessageCommand=function(self)
-			self:diffusealpha(0);
-		end;
-	};--]]
-};
-
 
 --Sound effects
 t[#t+1] = Def.ActorFrame{
