@@ -50,12 +50,6 @@ return Def.ActorFrame{
 
 	};
 	
-	-- Left Corner
-	LoadActor("mask") .. {
-		--Zoom 0.45 does strange things to positioning...
-		InitCommand=cmd(x,(-LIFEBAR_WIDTH/2)+80;horizalign,right;zoom,0.45;);
-	};
-	
 	-- Center
 	LoadActor("frame") .. {
 		OnCommand=cmd(zoomtowidth,LIFEBAR_WIDTH;zoomy,0.75;);

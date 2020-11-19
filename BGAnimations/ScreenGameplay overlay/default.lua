@@ -25,6 +25,7 @@ t[#t+1] = LoadActor("decoration_corner") .. {
 
 
 
+
 --Double
 --customtexturerect,0,0,[PixelsToCoverWidth]/[ImageWidth],[PixelsToCoverHeight]/[ImageHeight]
 --I said that I was gonna write it down. thx midi

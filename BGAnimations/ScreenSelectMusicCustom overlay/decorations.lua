@@ -56,12 +56,10 @@ local curhelpDifficultyText = 1;
 
 t[#t+1] = Def.ActorFrame{
 
-
-
 	LoadActor("arrows")..{
 		InitCommand=cmd(zoom,0;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
 		OnCommand=cmd(sleep,0.25;decelerate,0.5;zoom,1);
-		OffCommand=cmd(decelerate,0.5;zoom,0);
+		OffCommand=cmd(decelerate,0.25;zoom,0.8;decelerate,0.5;zoom,1;diffusealpha,0);
 	};
 
 	Def.Sprite{

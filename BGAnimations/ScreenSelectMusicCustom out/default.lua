@@ -1,7 +1,7 @@
 local t = Def.ActorFrame {};
 t[#t+1] = Def.Quad {
 	InitCommand=cmd(Center;zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,Color("Black"));
-	StartTransitioningCommand=cmd(diffusealpha,0;sleep,0;linear,4;diffusealpha,1);
+	StartTransitioningCommand=cmd(diffusealpha,0;sleep,4;linear,0.5;diffusealpha,1);
 };
 
 t[#t+1] = Def.Quad {

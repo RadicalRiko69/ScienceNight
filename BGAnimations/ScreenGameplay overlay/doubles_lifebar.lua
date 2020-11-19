@@ -68,12 +68,6 @@ return Def.ActorFrame{
 
 	};
 	
-	-- Left Corner
-	LoadActor("mask") .. {
-		--Zoom 0.45 does strange things to positioning...
-		InitCommand=cmd(x,(-LIFEBAR_WIDTH/2)+80;horizalign,right;zoom,0.45;);
-	};
-	
 	
 	-- Left Corner
 	LoadActor("begin") .. {
@@ -84,13 +78,7 @@ return Def.ActorFrame{
 	LoadActor("frame") .. {
 		OnCommand=cmd(zoomtowidth,LIFEBAR_WIDTH;zoomy,0.75;);
 	};
-	
-	-- Right Corner
-	LoadActor("mask") .. {
-		--Zoom 0.45 does strange things to positioning...
-		InitCommand=cmd(x,(LIFEBAR_WIDTH/2)-80;horizalign,right;zoom,0.45;rotationy,180);
-	};
-	
+
 	
 	-- Right Corner
 	LoadActor("begin") .. {
